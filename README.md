@@ -37,6 +37,32 @@ npm start
 
 > หากเปิดผ่าน GitHub Pages ระบบจะแสดงข้อมูลบอสและบันทึกเวลาไว้เฉพาะในเบราว์เซอร์นี้ เพราะ GitHub Pages ไม่รองรับเซิร์ฟเวอร์ Node.js
 
+## โครงสร้างไฟล์
+
+```text
+Binder-Town/
+├── index.html
+├── README.md
+└── Boss-Timer/
+    ├── README.md
+    ├── app.js
+    ├── bosses.json
+    ├── index.html
+    ├── package-lock.json
+    ├── package.json
+    ├── server.js
+    ├── styles.css
+    ├── data/
+    │   └── timers.json
+    ├── image/
+    │   └── Binder Town Map 2k PNG.png
+    └── sound/
+        ├── มี Field Boss กำลังจะเกิดในอีกสามนาที.mp3
+        └── มี Mini Boss กำลังจะเกิดในอีกหนึ่งนาที.mp3
+```
+
+> ผังนี้ไม่แสดงโฟลเดอร์ `.git` และ `node_modules`
+
 ---
 
 <p align="center">Developed by <img src="https://avatars.githubusercontent.com/u/96268091?v=4" alt="CrimsonX avatar" width="20" height="20" align="absmiddle"> <strong>CrimsonX</strong></p>

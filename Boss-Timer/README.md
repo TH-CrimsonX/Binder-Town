@@ -64,6 +64,7 @@ Boss-Timer/
 ├── app.js
 ├── bosses.json
 ├── index.html
+├── package-lock.json
 ├── package.json
 ├── server.js
 ├── styles.css
@@ -73,7 +74,6 @@ Boss-Timer/
 │   └── Binder Town Map 2k PNG.png
 └── sound/
     ├── มี Field Boss กำลังจะเกิดในอีกสามนาที.mp3
-    ├── มี Mini Boss กำลังจะเกิดในอีกสามนาที.mp3
     └── มี Mini Boss กำลังจะเกิดในอีกหนึ่งนาที.mp3
 ```
 

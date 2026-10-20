@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Binder Town Boss Timer — เว็บติดตามเวลาบอส พร้อมเสียงแจ้งเตือน"
+    />
+    <meta name="theme-color" content="#07131f" />
+    <title>Binder Town Boss Timer</title>
+    <link rel="icon" type="image/png" href="https://wiki.bindertowngame.com/img/ui/logo.png" />
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #07131f;
+        --panel: rgba(17, 29, 40, 0.9);
+        --line: rgba(168, 190, 214, 0.16);
+        --text: #edf4ff;
+        --muted: #9ab0c6;
+        --accent: #59d0ff;
+        --accent-strong: #00b1ff;
+        --gold: #ffc857;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        color: var(--text);
+        background:
+          radial-gradient(ellipse at top, rgba(35, 91, 124, 0.3), transparent 45%),
+          linear-gradient(180deg, #07131f, #0b1824 65%, #07131f);
+        font-family: "Segoe UI", "Noto Sans Thai", Tahoma, sans-serif;
+        line-height: 1.7;
+      }
+
+      a {
+        color: var(--accent);
+        text-underline-offset: 0.2em;
+      }
+
+      a:hover {
+        color: #a5e8ff;
+      }
+
+      .page {
+        width: min(920px, calc(100% - 32px));
+        margin: 0 auto;
+      }
+
+      .badges {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 8px;
+        padding: 22px 0 10px;
+      }
+
+      .badges img {
+        height: 28px;
+      }
+
+      .hero {
+        padding: 28px 20px 42px;
+        text-align: center;
+      }
+
+      .logo {
+        width: 88px;
+        height: 88px;
+        margin: 0 auto 14px;
+        object-fit: contain;
+        filter: drop-shadow(0 8px 24px rgba(0, 177, 255, 0.18));
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(2rem, 5vw, 3.1rem);
+        line-height: 1.2;
+      }
+
+      .subtitle {
+        max-width: 650px;
+        margin: 14px auto 0;
+        color: var(--muted);
+        font-size: 1.05rem;
+      }
+
+      .game-link {
+        display: inline-block;
+        margin-top: 8px;
+        font-size: 0.96rem;
+      }
+
+      .website-cta {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 26px;
+        padding: 13px 24px;
+        border: 1px solid rgba(89, 208, 255, 0.48);
+        border-radius: 12px;
+        color: #03131c;
+        background: linear-gradient(135deg, #8ee4ff, var(--accent-strong));
+        box-shadow: 0 10px 30px rgba(0, 177, 255, 0.2);
+        font-weight: 750;
+        text-decoration: none;
+        transition: transform 160ms ease, box-shadow 160ms ease;
+      }
+
+      .website-cta:hover {
+        color: #03131c;
+        box-shadow: 0 14px 34px rgba(0, 177, 255, 0.3);
+        transform: translateY(-2px);
+      }
+
+      .section {
+        margin: 0 0 20px;
+        padding: 26px clamp(20px, 5vw, 36px);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: var(--panel);
+        box-shadow: 0 18px 48px rgba(0, 0, 0, 0.16);
+      }
+
+      h2 {
+        margin: 0 0 18px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--line);
+        font-size: 1.45rem;
+      }
+
+      .features {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .features li {
+        padding: 14px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        color: #dce9f5;
+        background: rgba(7, 19, 31, 0.62);
+      }
+
+      .steps {
+        margin: 0 0 12px;
+      }
+
+      pre {
+        overflow-x: auto;
+        margin: 14px 0;
+        padding: 18px 20px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        color: #e4f2ff;
+        background: rgba(5, 14, 23, 0.82);
+        font: 0.95rem/1.65 Consolas, "Cascadia Code", monospace;
+      }
+
+      code {
+        color: #b9eaff;
+        font-family: Consolas, "Cascadia Code", monospace;
+      }
+
+      .note {
+        margin: 18px 0 0;
+        padding: 14px 16px;
+        border-left: 3px solid var(--gold);
+        border-radius: 0 8px 8px 0;
+        color: var(--muted);
+        background: rgba(255, 200, 87, 0.06);
+      }
+
+      .tree {
+        margin: 0;
+        padding: 18px;
+        overflow-x: auto;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: rgba(5, 14, 23, 0.82);
+        color: #cfe0ef;
+        font: 0.86rem/1.6 Consolas, "Cascadia Code", monospace;
+      }
+
+      .tree-note {
+        margin: 10px 0 0;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      footer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 20px 0 30px;
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
+      .avatar {
+        width: 22px;
+        height: 22px;
+        border: 1px solid var(--line);
+        border-radius: 50%;
+        object-fit: cover;
+      }
+
+      footer strong {
+        color: var(--text);
+      }
+
+      @media (max-width: 640px) {
+        .page {
+          width: min(100% - 20px, 560px);
+        }
+
+        .badges {
+          justify-content: center;
+          gap: 6px;
+          padding-top: 16px;
+        }
+
+        .badges img {
+          height: 24px;
+        }
+
+        .hero {
+          padding: 26px 8px 32px;
+        }
+
+        .section {
+          padding: 22px 18px;
+        }
+
+        .features {
+          grid-template-columns: 1fr;
+        }
+
+        .tree {
+          font-size: 0.78rem;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+
+        *,
+        *::before,
+        *::after {
+          transition-duration: 0.01ms !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <div class="badges" aria-label="Project badges">
+        <a href="https://github.com/TH-CrimsonX/Binder-Town" aria-label="GitHub repository">
+          <img
+            src="https://img.shields.io/github/stars/TH-CrimsonX/Binder-Town?style=for-the-badge&logo=github&logoColor=white&color=242938"
+            alt="GitHub stars"
+          />
+        </a>
+        <a href="https://github.com/TH-CrimsonX/Binder-Town/commits" aria-label="Recent commits">
+          <img
+            src="https://img.shields.io/github/last-commit/TH-CrimsonX/Binder-Town?style=for-the-badge&logo=git&logoColor=white&color=343b52"
+            alt="Last commit"
+          />
+        </a>
+        <img
+          src="https://img.shields.io/badge/Node.js-18%2B-43853d?style=for-the-badge&logo=node.js&logoColor=white"
+          alt="Node.js 18+"
+        />
+        <img
+          src="https://img.shields.io/badge/Express-Backend-343b52?style=for-the-badge&logo=express&logoColor=white"
+          alt="Express backend"
+        />
+      </div>
+
+      <header class="hero">
+        <img
+          class="logo"
+          src="https://wiki.bindertowngame.com/img/ui/logo.png"
+          alt="Binder Town Logo"
+        />
+        <h1>Binder Town Boss Timer</h1>
+        <p class="subtitle">
+          เว็บติดตามเวลาบอส พร้อมเสียงแจ้งเตือนสำหรับเกม Binder Town<br />
+          โดยสามารถเข้าเล่นเกมได้ที่
+          <a class="game-link" href="https://play.bindertowngame.com/">Binder Town</a>
+        </p>
+        <a
+          class="website-cta"
+          href="https://TH-CrimsonX.github.io/Binder-Town/Boss-Timer/"
+        >
+          <span aria-hidden="true">🚀</span>
+          เวอร์ชันบนเว็บไซต์
+        </a>
+      </header>
+
+      <main>
+        <section class="section" aria-labelledby="features-title">
+          <h2 id="features-title">ความสามารถ</h2>
+          <ul class="features">
+            <li>แสดงบอส Elite, Mini-Boss และ Field Boss พร้อมเวลานับถอยหลัง</li>
+            <li>ตั้งเวลาเกิดบอสและบันทึกเวลา</li>
+            <li>แจ้งเตือนด้วยเสียงเมื่อบอสใกล้เกิด</li>
+          </ul>
+        </section>
+
+        <section class="section" aria-labelledby="local-title">
+          <h2 id="local-title">รันบนเครื่อง (Local)</h2>
+          <p class="steps">
+            ต้องติดตั้ง <a href="https://nodejs.org/">Node.js</a> ก่อน จากนั้นเปิด
+            Terminal ในโฟลเดอร์ repository แล้วรันคำสั่ง:
+          </p>
+          <pre><code>cd Boss-Timer
+npm install
+npm start</code></pre>
+          <p>
+            จากนั้นเปิด <a href="http://localhost:3000">http://localhost:3000</a>
+            เพื่อใช้งาน
+          </p>
+          <p class="note">
+            หากเปิดผ่าน GitHub Pages ระบบจะแสดงข้อมูลบอสและบันทึกเวลาไว้เฉพาะในเบราว์เซอร์นี้
+            เพราะ GitHub Pages ไม่รองรับเซิร์ฟเวอร์ Node.js
+          </p>
+        </section>
+
+        <section class="section" aria-labelledby="structure-title">
+          <h2 id="structure-title">โครงสร้างไฟล์</h2>
+          <pre class="tree">Binder-Town/
+├── index.html
+├── README.md
+└── Boss-Timer/
+    ├── README.md
+    ├── app.js
+    ├── bosses.json
+    ├── index.html
+    ├── package-lock.json
+    ├── package.json
+    ├── server.js
+    ├── styles.css
+    ├── data/
+    │   └── timers.json
+    ├── image/
+    │   └── Binder Town Map 2k PNG.png
+    └── sound/
+        ├── มี Field Boss กำลังจะเกิดในอีกสามนาที.mp3
+        └── มี Mini Boss กำลังจะเกิดในอีกหนึ่งนาที.mp3</pre>
+          <p class="tree-note">ผังนี้ไม่แสดงโฟลเดอร์ <code>.git</code> และ <code>node_modules</code></p>
+        </section>
+      </main>
+
+      <footer>
+        <span>Developed by</span>
+        <img
+          class="avatar"
+          src="https://avatars.githubusercontent.com/u/96268091?v=4"
+          alt="CrimsonX avatar"
+        />
+        <strong>CrimsonX</strong>
+      </footer>
+    </div>
+  </body>
+</html>
