@@ -1,6 +1,6 @@
 const state = {
   bosses: [],
-  activeCategory: 'Elite',
+  activeCategory: 'Field Boss',
   soundEnabled: true,
   alertTriggered: new Set(),
   warningTriggered: new Set(),
