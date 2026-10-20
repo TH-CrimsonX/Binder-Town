@@ -28,7 +28,7 @@ body {
   font-family: 'Prompt', sans-serif;
   background:
     linear-gradient(180deg, rgba(6, 16, 25, 0.84), rgba(15, 30, 43, 0.86)),
-    url('/image/Binder%20Town%20Map%202k%20PNG.png') center center / cover no-repeat fixed;
+    url('./image/Binder%20Town%20Map%202k%20PNG.png') center center / cover no-repeat fixed;
   color: var(--text);
 }
 

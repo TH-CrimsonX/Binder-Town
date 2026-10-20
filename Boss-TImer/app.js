@@ -8,8 +8,8 @@ const state = {
 };
 
 const WARNING_SOUNDS = {
-  'Mini-Boss': '/sound/มี Mini Boss กำลังจะเกิดในอีกหนึ่งนาที.mp3',
-  'Field Boss': '/sound/มี Field Boss กำลังจะเกิดในอีกสามนาที.mp3'
+  'Mini-Boss': './sound/มี Mini Boss กำลังจะเกิดในอีกหนึ่งนาที.mp3',
+  'Field Boss': './sound/มี Field Boss กำลังจะเกิดในอีกสามนาที.mp3'
 };
 
 const LOCAL_STORAGE_KEY = 'binder-town-boss-timers';
@@ -498,7 +498,7 @@ function saveFieldBossTimer(slug, hours, minutes, seconds) {
   updateBossTimerInState(slug, timerRecord);
 
   try {
-    fetch(`/api/bosses/${slug}`, {
+    fetch(`./api/bosses/${slug}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -721,7 +721,7 @@ function openDialog(boss) {
 
 async function loadBosses() {
   try {
-    const response = await fetch('/api/bosses');
+    const response = await fetch('./api/bosses');
     if (!response.ok) {
       throw new Error('API unavailable');
     }
@@ -735,7 +735,7 @@ async function loadBosses() {
   }
 
   try {
-    const fallbackResponse = await fetch('/bosses.json');
+    const fallbackResponse = await fetch('./bosses.json');
     const payload = await fallbackResponse.json();
     const fallbackBosses = Array.isArray(payload.bosses) ? payload.bosses : payload;
     const savedTimers = getLocalTimerData();
@@ -751,7 +751,7 @@ async function loadBosses() {
 
 async function refreshBossesFromServer() {
   try {
-    const response = await fetch('/api/bosses');
+    const response = await fetch('./api/bosses');
     if (!response.ok) {
       return;
     }
@@ -806,7 +806,7 @@ async function submitTimer(event) {
   };
 
   try {
-    const response = await fetch(`/api/bosses/${activeBossSlug}`, {
+    const response = await fetch(`./api/bosses/${activeBossSlug}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
