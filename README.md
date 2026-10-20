@@ -13,7 +13,7 @@
 ต้องติดตั้ง [Node.js](https://nodejs.org/) ก่อน จากนั้นเปิด Terminal ในโฟลเดอร์โปรเจกต์และรัน:
 
 ```powershell
-cd Boss-TImer
+cd Boss-Timer
 npm install
 npm start
 ```
@@ -22,7 +22,7 @@ npm start
 
 > หากเปิดผ่าน GitHub Pages ระบบจะแสดงข้อมูลบอสและบันทึกเวลาไว้เฉพาะในเบราว์เซอร์นี้ เพราะ GitHub Pages ไม่รองรับเซิร์ฟเวอร์ Node.js การอัปเดตร่วมกันต้องรันแอปบนโฮสต์ที่รองรับ Node.js
 
-ดูรายละเอียดเพิ่มเติมได้ที่ [README ของโปรเจกต์](./Boss-TImer/README.md)
+ดูรายละเอียดเพิ่มเติมได้ที่ [README ของโปรเจกต์](./Boss-Timer/README.md)
 
 ---
 

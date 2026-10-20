@@ -22,7 +22,7 @@
 เปิด Terminal หรือ PowerShell ที่โฟลเดอร์หลักของ repository แล้วเข้าไปยังโฟลเดอร์โปรเจกต์:
 
 ```powershell
-cd "Boss-TImer"
+cd "Boss-Timer"
 npm install
 npm start
 ```
@@ -33,7 +33,7 @@ npm start
 
 ## การเผยแพร่บน GitHub
 
-สามารถอัปโหลดโฟลเดอร์ `Boss-TImer` ทั้งโฟลเดอร์ขึ้น GitHub ได้ โดย `README.md` นี้ควรอยู่ที่โฟลเดอร์เดียวกับ `package.json` และ `server.js` ส่วน README หลักของ repository อยู่ที่โฟลเดอร์ราก
+สามารถอัปโหลดโฟลเดอร์ `Boss-Timer` ทั้งโฟลเดอร์ขึ้น GitHub ได้ โดย `README.md` นี้ควรอยู่ที่โฟลเดอร์เดียวกับ `package.json` และ `server.js` ส่วน README หลักของ repository อยู่ที่โฟลเดอร์ราก
 
 **GitHub Pages รองรับเฉพาะเว็บสแตติกและไม่สามารถรัน `server.js` ได้** หากเผยแพร่ด้วย GitHub Pages หน้าเว็บอาจแสดงข้อมูลบอสจากไฟล์สำรองได้ แต่การบันทึกเวลาและการอัปเดตร่วมกันจะไม่ทำงานแบบแชร์ระหว่างผู้ใช้ การใช้งานแบบแชร์ต้องนำแอป Node.js ไปโฮสต์บนบริการที่รองรับ Node.js และตั้งค่า `PORT` ตามที่ผู้ให้บริการกำหนด
 
@@ -47,7 +47,7 @@ npm start
 ## โครงสร้างไฟล์
 
 ```text
-Boss-TImer/
+Boss-Timer/
 ├── README.md
 ├── app.js
 ├── bosses.json
