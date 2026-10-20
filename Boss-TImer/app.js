@@ -4,12 +4,169 @@ const state = {
   soundEnabled: true,
   alertTriggered: new Set(),
   warningTriggered: new Set(),
-  channelWarningTriggered: new Set()
+  channelWarningTriggered: new Set(),
+  channelSpawnTriggered: new Set()
 };
 
 const WARNING_SOUNDS = {
   'Mini-Boss': './sound/มี Mini Boss กำลังจะเกิดในอีกหนึ่งนาที.mp3',
   'Field Boss': './sound/มี Field Boss กำลังจะเกิดในอีกสามนาที.mp3'
+};
+
+const MINI_BOSS_WIKI_DETAILS = {
+  vale_keeper: {
+    attackSpeed: '1.23 วิ',
+    movementSpeed: '3.6 ช่อง/วิ',
+    weaknesses: [
+      'แพ้ธาตุ Holy (แสง): ได้รับดาเมจ ×1.2',
+      'ต้านธาตุ Shadow (มืด): ได้รับดาเมจ ×0.85'
+    ],
+    matchup: [
+      'มี Break Bar: สกิลควบคุมและกลไกอาชีพช่วยเติมแถบ เมื่อเต็มจะ STAGGER 4 วิ รับดาเมจ ×1.4 และหยุดร่ายท่าใหม่',
+      'ท่าพิเศษหลบด้วยการเดินหรือ Dash ไม่ใช่ FLEE; บอสไม่ถูกผลักหรือดึง',
+      'กลางคืนโจมตีแรงขึ้น ×1.35 และรับดาเมจ ×0.78 แต่ให้ EXP ×1.25, Gold และของดรอป ×1.4'
+    ]
+  },
+  dusk_herald: {
+    attackSpeed: '1.23 วิ',
+    movementSpeed: '3.6 ช่อง/วิ',
+    weaknesses: [
+      'แพ้ธาตุ Holy (แสง): ได้รับดาเมจ ×1.2',
+      'ต้านธาตุ Shadow (มืด): ได้รับดาเมจ ×0.85'
+    ],
+    matchup: [
+      'มี Break Bar: สกิลควบคุมและกลไกอาชีพช่วยเติมแถบ เมื่อเต็มจะ STAGGER 4 วิ รับดาเมจ ×1.4 และหยุดร่ายท่าใหม่',
+      'ท่าพิเศษหลบด้วยการเดินหรือ Dash ไม่ใช่ FLEE; บอสไม่ถูกผลักหรือดึง',
+      'กลางคืนโจมตีแรงขึ้น ×1.35 และรับดาเมจ ×0.78 แต่ให้ EXP ×1.25, Gold และของดรอป ×1.4'
+    ]
+  },
+  sky_sentinel: {
+    attackSpeed: '1.23 วิ',
+    movementSpeed: '3.6 ช่อง/วิ',
+    weaknesses: [
+      'แพ้ธาตุ Holy (แสง): ได้รับดาเมจ ×1.2',
+      'ต้านธาตุ Shadow (มืด): ได้รับดาเมจ ×0.85'
+    ],
+    matchup: [
+      'มี Break Bar: สกิลควบคุมและกลไกอาชีพช่วยเติมแถบ เมื่อเต็มจะ STAGGER 4 วิ รับดาเมจ ×1.4 และหยุดร่ายท่าใหม่',
+      'ท่าพิเศษหลบด้วยการเดินหรือ Dash ไม่ใช่ FLEE; บอสไม่ถูกผลักหรือดึง',
+      'กลางคืนโจมตีแรงขึ้น ×1.35 และรับดาเมจ ×0.78 แต่ให้ EXP ×1.25, Gold และของดรอป ×1.4'
+    ]
+  }
+};
+
+const BOSS_SPECIAL_ATTACKS = {
+  vale_keeper: [
+    'Keeper Thorns — กระสุน ×3, เตือน 1 วิ, ดาเมจ ×0.9',
+    "Keeper's Crush — วงกลม 3 ช่อง, เตือน 1.5 วิ, ดาเมจ ×1.8, ผลัก",
+    'Root Chase — ไล่ตาม ×2, เตือน 0.9 วิ, ดาเมจ ×1.2, ตรึง',
+    'Bramble Maw — วงกลม 3 ช่อง, เตือน 1.9 วิ, ดาเมจ ×1.7, ชะลอ'
+  ],
+  dusk_herald: [
+    'Dusk Bolts — กระสุน ×3, เตือน 1 วิ, ดาเมจ ×1',
+    'Dusk Lance — แนวตรง 8 ช่อง, เตือน 1.5 วิ, ดาเมจ ×1.7',
+    'Shadow Chase — ไล่ตาม ×3, เตือน 0.9 วิ, ดาเมจ ×1.1',
+    'Night Tolls — วงแหวน 3.2 ช่อง, เตือน 1.5 วิ, ดาเมจ ×1.5, ชะลอ'
+  ],
+  sky_sentinel: [
+    'Sky Javelin — กระสุน ×2, เตือน 1 วิ, ดาเมจ ×1.2',
+    'Gale Sweep — รูปพัด 5.5 ช่อง, เตือน 1.5 วิ, ดาเมจ ×1.7, ผลัก',
+    'Thunder Chase — ไล่ตาม ×3, เตือน 0.9 วิ, ดาเมจ ×1.1',
+    'Sky Dive — แนวตรง 8 ช่อง, เตือน 1.3 วิ, ดาเมจ ×1.8, ผลัก'
+  ],
+  bloom_crowned_stag: [
+    'Petal Sweep — รูปพัด 6 ช่อง, เตือน 1.6 วิ, ดาเมจ ×3, ผลัก',
+    'Petal Darts — กระสุน ×3, เตือน 1 วิ, ดาเมจ ×1.5',
+    'Thorn Bloom — วงกลม 2.2 ช่อง, เตือน 1.6 วิ, ดาเมจ ×2.5, ตรึงและค้าง 4 วิ',
+    'Blooming Trail — ไล่ตาม ×3, เตือน 0.9 วิ, ดาเมจ ×1.6',
+    'Crown of Spring — วงแหวน 6.5 ช่อง, เตือน 2.2 วิ, ดาเมจ ×4',
+    'Spring Tide — วงแหวน 9 ช่อง, เตือน 2.6 วิ, ดาเมจ ×4.5',
+    'Antler Charge — แนวตรง 9 ช่อง, เตือน 1.5 วิ, ดาเมจ ×2, ผลัก',
+    'Petal Storm — วงกลม 1.6 ช่อง, เตือน 1.3 วิ, ดาเมจ ×1.4'
+  ],
+  prism_shell_sovereign: [
+    'Prism Crush — วงกลม 3.5 ช่อง, เตือน 1.6 วิ, ดาเมจ ×3.5, ผลัก',
+    'Prism Shards — กระสุน ×3, เตือน 1 วิ, ดาเมจ ×1.5',
+    'Tidal Lance — แนวตรง 9 ช่อง, เตือน 1.8 วิ, ดาเมจ ×4',
+    'Tide Pursuit — ไล่ตาม ×3, เตือน 0.9 วิ, ดาเมจ ×1.6',
+    'Pearl Cage — วงแหวน 6 ช่อง, เตือน 1.6 วิ, ดาเมจ ×3, ค้าง 4 วิ',
+    'Shell Nova — วงแหวน 9 ช่อง, เตือน 2.6 วิ, ดาเมจ ×4.5',
+    'Prism Cross — แนวตรง 10 ช่อง, เตือน 1.7 วิ, ดาเมจ ×1.8',
+    'Shell Vortex — วงกลม 3.4 ช่อง, เตือน 1.9 วิ, ดาเมจ ×2.2'
+  ],
+  cinder_plume_roc: [
+    'Ember Fan — รูปพัด 7 ช่อง, เตือน 1.6 วิ, ดาเมจ ×3.5, ผลัก',
+    'Cinder Volley — กระสุน ×3, เตือน 1 วิ, ดาเมจ ×1.6',
+    'Molten Nest — วงกลม 2.5 ช่อง, เตือน 1.6 วิ, ดาเมจ ×2.8, ค้าง 5 วิ',
+    'Ember Rain — ไล่ตาม ×4, เตือน 0.9 วิ, ดาเมจ ×1.5',
+    'Phoenix Wake — แนวตรง 10 ช่อง, เตือน 2 วิ, ดาเมจ ×4.5',
+    'Solar Flare — วงแหวน 9 ช่อง, เตือน 2.6 วิ, ดาเมจ ×4.5',
+    'Meteor Rain — วงกลม 1.6 ช่อง, เตือน 1.3 วิ, ดาเมจ ×1.5',
+    'Phoenix Dive — แนวตรง 11 ช่อง, เตือน 1.5 วิ, ดาเมจ ×2.2, ผลัก'
+  ],
+  lotus_maw_matriarch: [
+    'Lotus Snap — รูปพัด 5.5 ช่อง, เตือน 1.6 วิ, ดาเมจ ×4',
+    'Thorn Spit — กระสุน ×3, เตือน 1 วิ, ดาเมจ ×1.5',
+    'Mire Seed — วงกลม 2.3 ช่อง, เตือน 1.6 วิ, ดาเมจ ×2.5, ชะลอและค้าง 5 วิ',
+    'Creeping Lotus — ไล่ตาม ×3, เตือน 0.9 วิ, ดาเมจ ×1.6',
+    'Petal Maelstrom — วงแหวน 7 ช่อง, เตือน 2.1 วิ, ดาเมจ ×4, ผลัก',
+    'Lotus Bloom — วงแหวน 9 ช่อง, เตือน 2.6 วิ, ดาเมจ ×4.5',
+    'Lotus Ripple — วงแหวน 3.2 ช่อง, เตือน 1.5 วิ, ดาเมจ ×1.8, ชะลอ',
+    'Bog Maw — วงกลม 3.4 ช่อง, เตือน 1.9 วิ, ดาเมจ ×2.2, ชะลอ'
+  ],
+  aurora_antler_regent: [
+    'Glacial Charge — แนวตรง 10 ช่อง, เตือน 1.9 วิ, ดาเมจ ×4.5, ผลัก',
+    'Icicle Spread — กระสุน ×3, เตือน 1 วิ, ดาเมจ ×1.6',
+    'Aurora Prison — วงกลม 2.4 ช่อง, เตือน 1.6 วิ, ดาเมจ ×2.5, ชะลอและค้าง 4 วิ',
+    'Frost Trail — ไล่ตาม ×3, เตือน 0.9 วิ, ดาเมจ ×1.6, ชะลอ',
+    'Winter Crown — วงแหวน 7 ช่อง, เตือน 2.2 วิ, ดาเมจ ×4',
+    'Aurora Burst — วงแหวน 9 ช่อง, เตือน 2.6 วิ, ดาเมจ ×4.5',
+    'Frost Pinwheel — แนวตรง 10 ช่อง, เตือน 1.4 วิ, ดาเมจ ×1.7',
+    'Glacier Rush — แนวตรง 9 ช่อง, เตือน 1.5 วิ, ดาเมจ ×2.1, ชะลอ'
+  ],
+  tempest_kite_empress: [
+    'Razor Gale — รูปพัด 7.5 ช่อง, เตือน 1.6 วิ, ดาเมจ ×3.5, ผลัก',
+    'Gale Feathers — กระสุน ×5, เตือน 1 วิ, ดาเมจ ×1.3',
+    'Storm Perch — วงกลม 2.5 ช่อง, เตือน 1.6 วิ, ดาเมจ ×3, ค้าง 5 วิ',
+    'Lightning Chase — ไล่ตาม ×4, เตือน 0.9 วิ, ดาเมจ ×1.5',
+    'Eye of Tempest — วงแหวน 7.5 ช่อง, เตือน 2.4 วิ, ดาเมจ ×4.5, ชะลอ',
+    'Thunderclap — วงแหวน 9 ช่อง, เตือน 2.6 วิ, ดาเมจ ×4.5',
+    'Lightning Field — วงกลม 1.3 ช่อง, เตือน 1.2 วิ, ดาเมจ ×1.3',
+    'Cyclone Pull — วงกลม 3.4 ช่อง, เตือน 1.9 วิ, ดาเมจ ×2.1'
+  ],
+  opal_weaver_queen: [
+    'Silk Fan — รูปพัด 6.5 ช่อง, เตือน 1.6 วิ, ดาเมจ ×3.5, ชะลอ',
+    'Silk Needles — กระสุน ×3, เตือน 1 วิ, ดาเมจ ×1.5',
+    'Opal Web — วงกลม 2.4 ช่อง, เตือน 1.6 วิ, ดาเมจ ×2.8, ตรึงและค้าง 5 วิ',
+    'Web Trail — ไล่ตาม ×3, เตือน 0.9 วิ, ดาเมจ ×1.5, ชะลอ',
+    'Royal Thread — แนวตรง 10 ช่อง, เตือน 2 วิ, ดาเมจ ×5',
+    'Opal Nova — วงแหวน 9 ช่อง, เตือน 2.6 วิ, ดาเมจ ×4.5',
+    'Web Cross — แนวตรง 10 ช่อง, เตือน 1.7 วิ, ดาเมจ ×1.6, ตรึง',
+    'Silk Ripple — วงแหวน 3.2 ช่อง, เตือน 1.5 วิ, ดาเมจ ×1.6'
+  ],
+  vale_warden: [
+    'Warden Slam — วงกลม 4 ช่อง, เตือน 1.8 วิ, ดาเมจ ×4, ผลัก',
+    'Warden Spears — กระสุน ×3, เตือน 1 วิ, ดาเมจ ×1.8',
+    'Verdant Judgment — แนวตรง 10 ช่อง, เตือน 2 วิ, ดาเมจ ×5',
+    'Verdant Chase — ไล่ตาม ×4, เตือน 0.9 วิ, ดาเมจ ×1.7',
+    'Sovereign Edict — วงแหวน 8 ช่อง, เตือน 2.5 วิ, ดาเมจ ×5, ค้าง 3 วิ',
+    'Judgment Nova — วงแหวน 9 ช่อง, เตือน 2.6 วิ, ดาเมจ ×5',
+    'Judgment Star — แนวตรง 10 ช่อง, เตือน 1.9 วิ, ดาเมจ ×1.8',
+    'Warden Charge — แนวตรง 11 ช่อง, เตือน 1.5 วิ, ดาเมจ ×2.4, ผลัก',
+    'Sovereign Ripple — วงแหวน 3.2 ช่อง, เตือน 1.5 วิ, ดาเมจ ×2'
+  ],
+  elder_sprout: ['Root Bind — วงกลม 2.2 ช่อง, เตือน 1.3 วิ, ดาเมจ ×0.8, ตรึง'],
+  thicket_stag: ['Ground Slam — วงกลม 2.8 ช่อง, เตือน 1.3 วิ, ดาเมจ ×1, ผลัก'],
+  willow_brute: ['Ground Slam — วงกลม 2.8 ช่อง, เตือน 1.3 วิ, ดาเมจ ×1, ผลัก'],
+  tide_brute: ['Ground Slam — วงกลม 2.8 ช่อง, เตือน 1.3 วิ, ดาเมจ ×1, ผลัก'],
+  brute: ['Ground Slam — วงกลม 2.8 ช่อง, เตือน 1.3 วิ, ดาเมจ ×1, ผลัก'],
+  moss_brute: ['Ground Slam — วงกลม 2.8 ช่อง, เตือน 1.3 วิ, ดาเมจ ×1, ผลัก'],
+  cinder_brute: ['Ground Slam — วงกลม 2.8 ช่อง, เตือน 1.3 วิ, ดาเมจ ×1, ผลัก'],
+  mire_elder: ['Mire Snare — วงกลม 2 ช่อง, เตือน 1.3 วิ, ดาเมจ ×0.8, ตรึง'],
+  rime_brute: ['Ground Slam — วงกลม 2.8 ช่อง, เตือน 1.3 วิ, ดาเมจ ×1, ผลัก'],
+  cloud_brute: ['Ground Slam — วงกลม 2.8 ช่อง, เตือน 1.3 วิ, ดาเมจ ×1, ผลัก'],
+  vale_remnant: ['Phantom Lunge — แนวตรง 6 ช่อง, เตือน 1.2 วิ, ดาเมจ ×1'],
+  throne_guard: ['Phantom Lunge — แนวตรง 6 ช่อง, เตือน 1.2 วิ, ดาเมจ ×1']
 };
 
 const LOCAL_STORAGE_KEY = 'binder-town-boss-timers';
@@ -35,7 +192,9 @@ const elements = {
   detailMeta: document.getElementById('detail-meta'),
   detailOverview: document.getElementById('detail-overview'),
   detailMatchup: document.getElementById('detail-matchup'),
-  detailTraits: document.getElementById('detail-traits'),
+  detailSkillsSection: document.getElementById('detail-skills-section'),
+  detailSkills: document.getElementById('detail-skills'),
+  detailBossSource: document.getElementById('detail-boss-source'),
   tabs: document.querySelectorAll('.tab-btn')
 };
 
@@ -100,6 +259,14 @@ function formatCountdown(totalSeconds) {
   }
 
   return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+}
+
+function formatBossCountdown(boss, totalSeconds) {
+  if (boss.category === 'Elite') {
+    return `${Math.ceil(Math.max(0, totalSeconds) / 60)}m`;
+  }
+
+  return formatCountdown(totalSeconds);
 }
 
 function getTimerRemainingSeconds(timer) {
@@ -170,21 +337,53 @@ function playBossSpawnTone() {
     soundContext = new AudioCtx();
   }
 
-  const oscillator = soundContext.createOscillator();
-  const gainNode = soundContext.createGain();
+  const playTone = () => {
+    const oscillator = soundContext.createOscillator();
+    const gainNode = soundContext.createGain();
 
-  oscillator.connect(gainNode);
-  gainNode.connect(soundContext.destination);
-  oscillator.type = 'square';
-  oscillator.frequency.setValueAtTime(220, soundContext.currentTime);
-  oscillator.frequency.exponentialRampToValueAtTime(880, soundContext.currentTime + 0.12);
+    oscillator.connect(gainNode);
+    gainNode.connect(soundContext.destination);
+    oscillator.type = 'square';
+    oscillator.frequency.setValueAtTime(220, soundContext.currentTime);
+    oscillator.frequency.exponentialRampToValueAtTime(880, soundContext.currentTime + 0.12);
 
-  gainNode.gain.setValueAtTime(0.0001, soundContext.currentTime);
-  gainNode.gain.exponentialRampToValueAtTime(0.06, soundContext.currentTime + 0.02);
-  gainNode.gain.exponentialRampToValueAtTime(0.0001, soundContext.currentTime + 0.45);
+    gainNode.gain.setValueAtTime(0.0001, soundContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.06, soundContext.currentTime + 0.02);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, soundContext.currentTime + 0.45);
 
-  oscillator.start();
-  oscillator.stop(soundContext.currentTime + 0.5);
+    oscillator.start();
+    oscillator.stop(soundContext.currentTime + 0.5);
+  };
+
+  if (soundContext.state === 'suspended') {
+    soundContext.resume().then(playTone).catch((error) => {
+      console.warn('Unable to resume audio context for boss spawn alert', error);
+    });
+    return;
+  }
+
+  playTone();
+}
+
+function unlockSoundContext() {
+  if (!state.soundEnabled) {
+    return;
+  }
+
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  if (!AudioCtx) {
+    return;
+  }
+
+  if (!soundContext) {
+    soundContext = new AudioCtx();
+  }
+
+  if (soundContext.state === 'suspended') {
+    soundContext.resume().catch((error) => {
+      console.warn('Unable to resume audio context after user interaction', error);
+    });
+  }
 }
 
 function playBossWarningSound(boss) {
@@ -216,6 +415,7 @@ function updateSoundToggleButtons() {
 
 function toggleSound() {
   state.soundEnabled = !state.soundEnabled;
+  unlockSoundContext();
   updateSoundToggleButtons();
 }
 
@@ -233,6 +433,21 @@ function setAutoIp() {
       elements.recordIp.value = 'Auto-detect failed';
       elements.recordIp.readOnly = true;
     });
+}
+
+function renderBossStats(boss) {
+  return `
+    <div class="stats-grid">
+      <div class="stat-line"><span>HP</span><strong>${boss.hp}</strong></div>
+      <div class="stat-line"><span>DMG</span><strong>${boss.dmg}</strong></div>
+      <div class="stat-line"><span>DEF</span><strong>${boss.def}</strong></div>
+      <div class="stat-line"><span>MDEF</span><strong>${boss.mdef}</strong></div>
+      <div class="stat-line"><span>HIT</span><strong>${boss.hit}</strong></div>
+      <div class="stat-line"><span>FLEE</span><strong>${boss.flee}</strong></div>
+      <div class="stat-line"><span>Vision</span><strong>${boss.vision}</strong></div>
+      <div class="stat-line"><span>Cadence</span><strong>${boss.cadence}</strong></div>
+    </div>
+  `;
 }
 
 function renderBossCard(boss) {
@@ -275,18 +490,13 @@ function renderBossCard(boss) {
     </div>
   ` : '';
 
-  const footerActions = boss.category === 'Field Boss'
+  const footerActions = boss.category === 'Mini-Boss'
     ? `
-      <div class="button-group compact-button-group">
-        <button class="secondary-btn detail-link" type="button" data-view-details="${boss.slug}">รายละเอียดเพิ่มเติม</button>
-      </div>
-    `
-    : `
       <div class="button-group">
-        <button class="secondary-btn detail-link" type="button" data-view-details="${boss.slug}">รายละเอียดเพิ่มเติม</button>
         <button class="secondary-btn" type="button" data-open-update="${boss.slug}">บันทึกเวลา</button>
       </div>
-    `;
+    `
+    : '';
 
   return `
     <article class="boss-card" data-slug="${boss.slug}">
@@ -305,28 +515,22 @@ function renderBossCard(boss) {
       <div class="countdown-wrap">
         <div>
           <div class="countdown-label">เวลาเกิดใหม่</div>
-          <div class="countdown-value" data-countdown="${boss.slug}">${formatCountdown(remaining)}</div>
+          <div class="countdown-value" data-countdown="${boss.slug}">${formatBossCountdown(boss, remaining)}</div>
         </div>
         <span class="countdown-label">${boss.respawnMinutes} นาที</span>
       </div>
 
-      <div class="stats-grid">
-        <div class="stat-line"><span>HP</span><strong>${boss.hp}</strong></div>
-        <div class="stat-line"><span>DMG</span><strong>${boss.dmg}</strong></div>
-        <div class="stat-line"><span>DEF</span><strong>${boss.def}</strong></div>
-        <div class="stat-line"><span>MDEF</span><strong>${boss.mdef}</strong></div>
-        <div class="stat-line"><span>HIT</span><strong>${boss.hit}</strong></div>
-        <div class="stat-line"><span>FLEE</span><strong>${boss.flee}</strong></div>
-        <div class="stat-line"><span>Vision</span><strong>${boss.vision}</strong></div>
-        <div class="stat-line"><span>Cadence</span><strong>${boss.cadence}</strong></div>
-      </div>
+      ${renderBossStats(boss)}
 
-      <div class="card-note"><strong>Card 5★:</strong> ${boss.card} — ${boss.cardMaxAbility || boss.cardAbility || 'ข้อมูลการ์ดยังไม่พร้อม'}</div>
+      <div class="boss-card-extra">
+        <p class="boss-card-note"><strong>Card 5★:</strong> ${boss.card} — ${boss.cardMaxAbility || boss.cardAbility || 'ข้อมูลการ์ดยังไม่พร้อม'}</p>
+        <button class="secondary-btn detail-link" type="button" data-view-details="${boss.slug}">รายละเอียดเพิ่มเติม</button>
+      </div>
 
       ${fieldInlineForm}
 
-      <div class="card-footer">
-        <span class="record-tag">${lastNote}</span>
+      <div class="card-footer ${boss.category === 'Field Boss' ? 'field-boss-footer' : ''}">
+        ${boss.category === 'Elite' ? '' : `<span class="record-tag ${boss.category === 'Field Boss' ? 'field-boss-record' : ''}">${lastNote}</span>`}
         ${footerActions}
       </div>
     </article>
@@ -399,6 +603,18 @@ function renderMiniBossBoard() {
               aria-label="${state.soundEnabled ? 'ปิดเสียงแจ้งเตือน' : 'เปิดเสียงแจ้งเตือน'}"
             >${state.soundEnabled ? '🔊' : '🔇'}</button>
           </div>
+          <div class="countdown-wrap mini-boss-respawn">
+            <div>
+              <div class="countdown-label">เวลาเกิดใหม่</div>
+              <div class="countdown-value">30m</div>
+            </div>
+            <span class="countdown-label">30 นาที</span>
+          </div>
+          ${renderBossStats(boss)}
+          <div class="boss-card-extra">
+            <p class="boss-card-note"><strong>Card 5★:</strong> ${boss.cardMaxAbility || boss.cardAbility || 'ข้อมูลการ์ดยังไม่พร้อม'}</p>
+            <button type="button" class="secondary-btn detail-link mini-boss-detail-btn" data-view-details="${boss.slug}">รายละเอียดเพิ่มเติม</button>
+          </div>
           <div class="channel-board">
             ${rows}
           </div>
@@ -414,11 +630,13 @@ function renderDetailDialog(boss) {
     return;
   }
 
-  const matchupText = [
-    `${boss.category === 'Elite' ? 'Elite' : 'Boss'} ${boss.name} มีจุดอ่อนต่อความเร็วและสกิลควบคุม`,
-    `มีการโจมตีแบบ ${boss.category === 'Elite' ? 'กดพื้นที่ / ผลัก' : 'โจมตีระยะใกล้'} และควรหลีกเลี่ยงการยืนติดในจุดที่มองเห็น`,
-    `Card 1★ และ 5★ เสริมพลังยุทธวิธีแบบ ${boss.card || 'คอนโทรลพื้นที่'} ให้ประสิทธิภาพที่ดีขึ้นเมื่อใช้ร่วมกับการกดแผนการรักษา/สกิลควบคุม`
-  ];
+  const miniBossDetails = MINI_BOSS_WIKI_DETAILS[boss.slug];
+  const matchupText = miniBossDetails
+    ? [...miniBossDetails.weaknesses, ...miniBossDetails.matchup]
+    : [
+      `${boss.category === 'Elite' ? 'Elite' : 'Boss'} ${boss.name} มีจุดอ่อนต่อความเร็วและสกิลควบคุม`,
+      `มีการโจมตีแบบ ${boss.category === 'Elite' ? 'กดพื้นที่ / ผลัก' : 'โจมตีระยะใกล้'} และควรหลีกเลี่ยงการยืนติดในจุดที่มองเห็น`
+    ];
 
   const traits = [
     `บทบาท: ${boss.category}`,
@@ -428,7 +646,11 @@ function renderDetailDialog(boss) {
     `HP: ${boss.hp}`,
     `DMG: ${boss.dmg}`,
     `DEF / MDEF: ${boss.def} / ${boss.mdef}`,
-    `HIT / FLEE: ${boss.hit} / ${boss.flee}`
+    `HIT / FLEE: ${boss.hit} / ${boss.flee}`,
+    ...(miniBossDetails ? [
+      `ความเร็วเคลื่อนที่: ${miniBossDetails.movementSpeed}`,
+      `จังหวะโจมตี: ทุก ${miniBossDetails.attackSpeed}`
+    ] : [])
   ];
 
   elements.detailImage.src = boss.image;
@@ -447,6 +669,11 @@ function renderDetailDialog(boss) {
   `;
   elements.detailOverview.innerHTML = traits.map((item) => `<li>${item}</li>`).join('');
   elements.detailMatchup.innerHTML = matchupText.map((item) => `<li>${item}</li>`).join('');
+  elements.detailSkills.innerHTML = (BOSS_SPECIAL_ATTACKS[boss.slug] || [])
+    .map((skill) => `<li>${skill}</li>`)
+    .join('');
+  elements.detailBossSource.href = boss.detailsUrl || 'https://wiki.bindertowngame.com/bosses';
+  elements.detailBossSource.hidden = !BOSS_SPECIAL_ATTACKS[boss.slug];
 
   elements.detailDialog.showModal();
 }
@@ -577,6 +804,8 @@ function renderBosses() {
       const seconds = Math.max(0, Math.min(59, Number(secondsInput.value || 0)));
       const timers = getChannelTimerData();
       const [bossSlug, channelText] = key.split(':');
+      state.channelSpawnTriggered.delete(key);
+      state.channelWarningTriggered.delete(key);
       timers[key] = {
         bossSlug,
         category: 'Mini-Boss',
@@ -595,6 +824,8 @@ function renderBosses() {
       const key = button.dataset.channelKill;
       const timers = getChannelTimerData();
       const [bossSlug, channelText] = key.split(':');
+      state.channelSpawnTriggered.delete(key);
+      state.channelWarningTriggered.delete(key);
       timers[key] = {
         bossSlug,
         category: 'Mini-Boss',
@@ -644,7 +875,7 @@ function refreshCountdowns() {
         ? 180
         : 0;
 
-    element.textContent = formatCountdown(remaining);
+    element.textContent = formatBossCountdown(boss, remaining);
     element.classList.toggle('countdown-danger', remaining <= warningThreshold && remaining > 0);
 
     if (remaining <= 0) {
@@ -678,23 +909,43 @@ function refreshCountdowns() {
   });
 
   const channelTimers = getChannelTimerData();
+  let channelTimersChanged = false;
   Object.entries(channelTimers).forEach(([key, timer]) => {
     const countdownElement = document.querySelector(`[data-channel-countdown="${key}"]`);
-    if (!countdownElement) {
+    const remaining = getTimerRemainingSeconds(timer) - ((Date.now() - new Date(timer.updatedAt).getTime()) / 1000);
+    const safe = Math.max(0, remaining);
+
+    if (safe <= 0) {
+      if (!state.channelSpawnTriggered.has(key)) {
+        playBossSpawnTone();
+        state.channelSpawnTriggered.add(key);
+      }
+      delete channelTimers[key];
+      channelTimersChanged = true;
+      state.channelWarningTriggered.delete(key);
+
+      if (countdownElement) {
+        countdownElement.textContent = '00:00';
+        countdownElement.classList.remove('countdown-danger');
+      }
+
+      const minutesInput = document.querySelector(`[data-channel-minutes="${key}"]`);
+      const secondsInput = document.querySelector(`[data-channel-seconds="${key}"]`);
+      if (minutesInput) {
+        minutesInput.value = 0;
+      }
+      if (secondsInput) {
+        secondsInput.value = 0;
+      }
       return;
     }
 
-    const remaining = getTimerRemainingSeconds(timer) - ((Date.now() - new Date(timer.updatedAt).getTime()) / 1000);
-    const safe = Math.max(0, remaining);
-    countdownElement.textContent = formatCountdown(safe);
-
-    if (safe <= 60 && safe > 0) {
-      countdownElement.classList.add('countdown-danger');
-    } else {
-      countdownElement.classList.remove('countdown-danger');
+    if (countdownElement) {
+      countdownElement.textContent = formatCountdown(safe);
+      countdownElement.classList.toggle('countdown-danger', safe <= 60);
     }
 
-    if (safe <= 60 && safe > 0) {
+    if (safe <= 60) {
       const [bossSlug] = key.split(':');
       const boss = state.bosses.find((entry) => entry.slug === bossSlug);
       if (boss && !state.channelWarningTriggered.has(key)) {
@@ -705,6 +956,10 @@ function refreshCountdowns() {
       state.channelWarningTriggered.delete(key);
     }
   });
+
+  if (channelTimersChanged) {
+    saveChannelTimerData(channelTimers);
+  }
 }
 
 function openDialog(boss) {
@@ -882,6 +1137,8 @@ function bindEvents() {
 }
 
 bindEvents();
+document.addEventListener('pointerdown', unlockSoundContext, { once: true });
+document.addEventListener('keydown', unlockSoundContext, { once: true });
 setAutoIp();
 loadBosses();
 setInterval(refreshCountdowns, 1000);

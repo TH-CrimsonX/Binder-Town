@@ -100,12 +100,13 @@ h1 {
 
 .live-pill {
   padding: 0.5rem 0.9rem;
-  border-radius: 999px;
+  border-radius: 12px;
   border: 1px solid rgba(89, 208, 255, 0.4);
   background: rgba(89, 208, 255, 0.08);
   color: var(--accent);
   font-size: 0.74rem;
-  white-space: nowrap;
+  white-space: normal;
+  text-align: center;
 }
 
 .page-shell {
@@ -174,7 +175,7 @@ h1 {
   background: rgba(255, 255, 255, 0.04);
   color: var(--text);
   padding: 0.7rem 1rem;
-  border-radius: 999px;
+  border-radius: 12px;
   cursor: pointer;
   font-weight: 600;
 }
@@ -187,6 +188,8 @@ h1 {
 
 .detail-dialog {
   width: min(680px, calc(100% - 20px));
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
 .detail-dialog-shell {
@@ -259,6 +262,40 @@ h1 {
   font-size: 0.76rem;
 }
 
+.detail-source-link {
+  display: inline-flex;
+  color: var(--accent);
+  font-size: 0.72rem;
+}
+
+.boss-card-extra {
+  display: grid;
+  justify-items: start;
+  gap: 0.45rem;
+}
+
+.boss-card-extra .detail-link {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--accent);
+}
+
+.boss-card-note {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.72rem;
+  line-height: 1.5;
+}
+
+.boss-card-note strong {
+  color: var(--text);
+}
+
+.mini-boss-detail-btn {
+  justify-self: start;
+}
+
 .category-panel {
   background: rgba(7, 18, 28, 0.72);
   border: 1px solid var(--line);
@@ -269,7 +306,7 @@ h1 {
 
 .mini-boss-board-wrap {
   display: grid;
-  grid-template-columns: repeat(3, minmax(260px, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.8rem;
   padding: 0.8rem;
   align-items: start;
@@ -297,6 +334,7 @@ h1 {
   display: flex;
   align-items: center;
   gap: 0.8rem;
+  min-width: 0;
 }
 
 .mini-boss-text {
@@ -365,7 +403,7 @@ h1 {
 
 .channel-row {
   display: grid;
-  grid-template-columns: minmax(92px, 1fr) minmax(58px, 0.8fr) minmax(120px, 1.5fr) auto;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, auto);
   align-items: center;
   gap: 0.45rem;
   padding: 0.42rem 0.5rem;
@@ -390,9 +428,12 @@ h1 {
   color: var(--muted);
   font-size: 0.6rem;
   line-height: 1.2;
-  white-space: nowrap;
+  white-space: normal;
   overflow: hidden;
-  text-overflow: ellipsis;
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .channel-time {
@@ -424,10 +465,21 @@ h1 {
 }
 
 .channel-actions {
+  grid-column: 1 / -1;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   gap: 0.3rem;
   flex-wrap: wrap;
+}
+
+.channel-actions .quick-kill {
+  order: 1;
+  margin-right: auto;
+}
+
+.channel-actions .channel-save-btn {
+  order: 2;
+  margin-left: auto;
 }
 
 .channel-actions button,
@@ -511,16 +563,135 @@ h1 {
 
 @media (max-width: 960px) {
   .mini-boss-board-wrap {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .mini-boss-board-wrap {
     grid-template-columns: 1fr;
   }
 
   .channel-row {
-    grid-template-columns: 1fr;
-    align-items: stretch;
+    grid-template-columns: minmax(84px, auto) minmax(0, 1fr);
+    gap: 0.35rem 0.55rem;
+  }
+
+  .channel-info {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .channel-time {
+    grid-column: 2;
+    grid-row: 1;
   }
 
   .channel-inputs {
+    grid-column: 1;
+    grid-row: 2;
+    align-items: center;
+    align-self: center;
+    gap: 0.2rem;
+  }
+
+  .channel-actions {
+    grid-column: 2;
+    grid-row: 2;
     justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: nowrap;
+  }
+
+  .channel-actions button {
+    padding: 0.3rem 0.34rem;
+    font-size: 0.54rem;
+    white-space: nowrap;
+  }
+
+  .channel-info {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.1rem 0.45rem;
+  }
+
+  .channel-number {
+    white-space: nowrap;
+  }
+
+  .channel-inputs label {
+    display: flex;
+    align-items: center;
+    gap: 0.12rem;
+    font-size: 0.5rem;
+  }
+
+  .channel-inputs input {
+    width: 48px;
+    min-width: 48px;
+    padding: 0.08rem 0.24rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .mini-boss-board-wrap {
+    padding: 0.5rem;
+  }
+
+  .mini-boss-panel {
+    padding: 0.55rem;
+  }
+
+  .mini-boss-header {
+    gap: 0.5rem;
+  }
+
+  .mini-boss-meta {
+    min-width: 0;
+    gap: 0.55rem;
+  }
+
+  .mini-boss-thumb {
+    width: 44px;
+    height: 44px;
+    flex: 0 0 auto;
+  }
+
+  .mini-boss-meta h3 {
+    font-size: 0.9rem;
+  }
+
+  .channel-row {
+    padding: 0.38rem;
+  }
+
+  .channel-actions button {
+    padding: 0.28rem 0.3rem;
+    font-size: 0.5rem;
+  }
+
+  .channel-inputs input {
+    width: 40px;
+    min-width: 40px;
+  }
+}
+
+@media (max-width: 370px) {
+  .channel-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .channel-actions .quick-kill {
+    align-self: flex-start;
+    margin-right: 0;
+  }
+
+  .channel-actions .channel-save-btn {
+    align-self: flex-end;
+    margin-left: 0;
   }
 }
 
@@ -658,13 +829,6 @@ h1 {
   font-weight: 500;
 }
 
-.card-note {
-  font-size: 0.72rem;
-  color: var(--muted);
-  line-height: 1.5;
-  min-height: 42px;
-}
-
 .card-footer {
   display: flex;
   justify-content: space-between;
@@ -678,6 +842,16 @@ h1 {
   color: var(--muted);
   line-height: 1.5;
   max-width: 44%;
+}
+
+.field-boss-footer {
+  justify-content: center;
+}
+
+.field-boss-record {
+  width: 100%;
+  max-width: none;
+  text-align: center;
 }
 
 .button-group {
