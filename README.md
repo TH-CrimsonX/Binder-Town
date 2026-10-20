@@ -5,23 +5,25 @@
   <img src="https://img.shields.io/badge/Express-Backend-343b52?style=for-the-badge&logo=express&logoColor=white" alt="Express backend">
 </p>
 
-<h1 align="center">Binder Town Boss Timer</h1>
-
-<p align="center">เว็บติดตามเวลาบอส พร้อมเสียงแจ้งเตือนและการอัปเดตเวลาร่วมกัน</p>
-
 <p align="center">
-  <a href="https://TH-CrimsonX.github.io/Binder-Town/Boss-Timer/"><img src="https://img.shields.io/badge/เปิดเว็บไซต์-เริ่มใช้งาน-7c5cff?style=for-the-badge&logo=googlechrome&logoColor=white" alt="เปิดเว็บไซต์ Binder Town Boss Timer"></a>
+  <img src="https://wiki.bindertowngame.com/img/ui/logo.png" alt="Binder Town Logo" width="88">
 </p>
 
-> ธีมป้ายและการนำเสนอเน้นโทนมืดให้เข้ากับหน้าโปรเจกต์ โดยสีพื้นหลังของ README จะปรับตามธีม GitHub ที่ผู้ใช้เลือก
+<h1 align="center">Binder Town Boss Timer</h1>
+
+<p align="center">เว็บติดตามเวลาบอส พร้อมเสียงแจ้งเตือนสำหรับเกม Binder Town</br>โดยสามารถเข้าเล่นเกมได้ที่ <span style="font-size:1.08em;"><a href="https://play.bindertowngame.com/">https://play.bindertowngame.com/</a></p>
 
 ## ความสามารถ
 
 - แสดงบอส Elite, Mini-Boss และ Field Boss พร้อมเวลานับถอยหลัง
-- ตั้งเวลาเกิดบอสและอัปเดตข้อมูลร่วมกันผ่านเซิร์ฟเวอร์
+- ตั้งเวลาเกิดบอสและบันทึกเวลา
 - แจ้งเตือนด้วยเสียงเมื่อบอสใกล้เกิด
 
-## เริ่มใช้งาน
+## เวอร์ชันบนเว็บไซต์
+
+ใช้งานบนเว็บไซต์ <span style="font-size:1.08em;">🔗 <a href="https://TH-CrimsonX.github.io/Binder-Town/Boss-Timer/">คลิกที่นี่</a></span>
+
+## รันบนเครื่อง (Local)
 
 ต้องติดตั้ง [Node.js](https://nodejs.org/) ก่อน จากนั้นเปิด Terminal ในโฟลเดอร์โปรเจกต์และรัน:
 
@@ -33,10 +35,8 @@ npm start
 
 เปิด <http://localhost:3000> เพื่อใช้งาน
 
-> หากเปิดผ่าน GitHub Pages ระบบจะแสดงข้อมูลบอสและบันทึกเวลาไว้เฉพาะในเบราว์เซอร์นี้ เพราะ GitHub Pages ไม่รองรับเซิร์ฟเวอร์ Node.js การอัปเดตร่วมกันต้องรันแอปบนโฮสต์ที่รองรับ Node.js
-
-ดูรายละเอียดเพิ่มเติมได้ที่ [README ของโปรเจกต์](./Boss-Timer/README.md)
+> หากเปิดผ่าน GitHub Pages ระบบจะแสดงข้อมูลบอสและบันทึกเวลาไว้เฉพาะในเบราว์เซอร์นี้ เพราะ GitHub Pages ไม่รองรับเซิร์ฟเวอร์ Node.js
 
 ---
 
-Developer by CrimsonX
+<p align="center">Developed by <img src="https://avatars.githubusercontent.com/u/96268091?v=4" alt="CrimsonX avatar" width="20" height="20" align="absmiddle"> <strong>CrimsonX</strong></p>
