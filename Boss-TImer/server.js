@@ -1,0 +1,622 @@
+const express = require('express');
+const fs = require('fs');
+const path = require('path');
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+const DATA_DIR = path.join(__dirname, 'data');
+const DATA_FILE = path.join(DATA_DIR, 'timers.json');
+const INDEX_FILE = path.join(__dirname, 'index.html');
+
+const BOSS_CATALOG = [
+  {
+    "slug": "bloom_crowned_stag",
+    "name": "Bloom Crowned Stag",
+    "category": "Field Boss",
+    "level": 25,
+    "hp": "2,115,012",
+    "dmg": "711–963",
+    "def": 55,
+    "mdef": 23,
+    "hit": 55,
+    "flee": 30,
+    "vision": "9.5",
+    "cadence": "1.7s",
+    "respawnMinutes": 180,
+    "map": "Bloomcrown Glade",
+    "card": "Spring Bloom",
+    "cardAbility": "เมื่อสังหารมอน: ฮีลตัวเองและทีม 6–15% Max HP, เพิ่มความเร็ววิ่ง",
+    "cardMaxAbility": "เมื่อสังหารมอน: ฮีลตัวเองและทีม 15% Max HP, เพิ่มความเร็ววิ่ง +10%",
+    "detailsUrl": "https://wiki.bindertowngame.com/mob/bloom_crowned_stag#matchup",
+    "image": "https://wiki.bindertowngame.com/img/mob/bloom_crowned_stag.png"
+  },
+  {
+    "slug": "prism_shell_sovereign",
+    "name": "Prism Shell Sovereign",
+    "category": "Field Boss",
+    "level": 25,
+    "hp": "2,115,012",
+    "dmg": "711–963",
+    "def": 55,
+    "mdef": 23,
+    "hit": 55,
+    "flee": 30,
+    "vision": "9.5",
+    "cadence": "1.7s",
+    "respawnMinutes": 180,
+    "map": "Ancient Ruins",
+    "card": "Pearl Guard",
+    "cardAbility": "ป้องกันและค้างเป้าหมายแบบวงกลม, เพิ่มความเฉียบคมเมื่อได้คอมโบ",
+    "cardMaxAbility": "ป้องกันและค้างเป้าหมายแบบวงกลม, เพิ่มความเสียหายและคมของการโจมตีสูงสุด",
+    "detailsUrl": "https://wiki.bindertowngame.com/mob/prism_shell_sovereign#matchup",
+    "image": "https://wiki.bindertowngame.com/img/mob/prism_shell_sovereign.png"
+  },
+  {
+    "slug": "cinder_plume_roc",
+    "name": "Cinder Plume Roc",
+    "category": "Field Boss",
+    "level": 36,
+    "hp": "3,141,771",
+    "dmg": "1,010–1,592",
+    "def": 69,
+    "mdef": 32,
+    "hit": 68,
+    "flee": 31,
+    "vision": "10.5",
+    "cadence": "1.8s",
+    "respawnMinutes": 180,
+    "map": "Cinder Eyrie",
+    "card": "Phoenix Wake",
+    "cardAbility": "แผ่ดาเมจแบบถล่ม, ทิ้งแผลลาวาและเดินตามเป้าหมาย",
+    "cardMaxAbility": "แผ่ดาเมจแบบถล่ม, ทิ้งแผลลาวาและเพิ่มความเร็วการโจมตี",
+    "detailsUrl": "https://wiki.bindertowngame.com/mob/cinder_plume_roc#matchup",
+    "image": "https://wiki.bindertowngame.com/img/mob/cinder_plume_roc.png"
+  },
+  {
+    "slug": "lotus_maw_matriarch",
+    "name": "Lotus Maw Matriarch",
+    "category": "Field Boss",
+    "level": 40,
+    "hp": "3,499,926",
+    "dmg": "1,210–1,862",
+    "def": 74,
+    "mdef": 35,
+    "hit": 72,
+    "flee": 32,
+    "vision": "10.5",
+    "cadence": "1.8s",
+    "respawnMinutes": 180,
+    "map": "Lotus Hollow",
+    "card": "Mire Seed",
+    "cardAbility": "ติดค้าง/ชะลอ, โจมตีแบบกระจายและล้างเงาในพื้นที่",
+    "cardMaxAbility": "ติดค้าง/ชะลออย่างแรง, เพิ่มความเสียหายพื้นที่และการเยียวยาตัวเองขึ้น",
+    "detailsUrl": "https://wiki.bindertowngame.com/mob/lotus_maw_matriarch#matchup",
+    "image": "https://wiki.bindertowngame.com/img/mob/lotus_maw_matriarch.png"
+  },
+  {
+    "slug": "aurora_antler_regent",
+    "name": "Aurora Antler Regent",
+    "category": "Field Boss",
+    "level": 58,
+    "hp": "6,797,259",
+    "dmg": "2,347–3,421",
+    "def": 92,
+    "mdef": 41,
+    "hit": 86,
+    "flee": 35,
+    "vision": "12.0",
+    "cadence": "1.9s",
+    "respawnMinutes": 180,
+    "map": "Aurora Hollow",
+    "card": "Winter Crown",
+    "cardAbility": "ค้างและชะลอ, สร้างแถวสภาพแวดล้อมแบบน้ำแข็งครอบพื้นที่",
+    "cardMaxAbility": "ค้างและชะลออย่างมาก, เพิ่มความเสียหายจากน้ำแข็งและลดความเร็วเป้าหมาย",
+    "detailsUrl": "https://wiki.bindertowngame.com/mob/aurora_antler_regent#matchup",
+    "image": "https://wiki.bindertowngame.com/img/mob/aurora_antler_regent.png"
+  },
+  {
+    "slug": "tempest_kite_empress",
+    "name": "Tempest Kite Empress",
+    "category": "Field Boss",
+    "level": 70,
+    "hp": "9,259,210",
+    "dmg": "3,188–4,526",
+    "def": 105,
+    "mdef": 46,
+    "hit": 94,
+    "flee": 38,
+    "vision": "12.5",
+    "cadence": "1.9s",
+    "respawnMinutes": 180,
+    "map": "Tempest Aerie",
+    "card": "Eye of Tempest",
+    "cardAbility": "สลับระยะพร้อมพายุและแรงดันลม, สร้างสนามไฟฟ้าตามแนว",
+    "cardMaxAbility": "สลับระยะพร้อมพายุและแรงดันลม, สร้างสนามไฟฟ้าตามแนวแบบอันตรายสูงสุด",
+    "detailsUrl": "https://wiki.bindertowngame.com/mob/tempest_kite_empress#matchup",
+    "image": "https://wiki.bindertowngame.com/img/mob/tempest_kite_empress.png"
+  },
+  {
+    "slug": "opal_weaver_queen",
+    "name": "Opal Weaver Queen",
+    "category": "Field Boss",
+    "level": 80,
+    "hp": "13,104,970",
+    "dmg": "4,205–5,994",
+    "def": 122,
+    "mdef": 52,
+    "hit": 102,
+    "flee": 41,
+    "vision": "13.5",
+    "cadence": "2.0s",
+    "respawnMinutes": 180,
+    "map": "Opalweb Grotto",
+    "card": "Royal Thread",
+    "cardAbility": "ร่ายดักร้อย/ตรึง, เสริมความเร็วและพื้นที่ทำลายแบบเกลียว",
+    "cardMaxAbility": "ร่ายดักร้อย/ตรึงแบบซ้อน, เพิ่มความเร็วและความเสียหายพื้นที่แบบเกลียว",
+    "detailsUrl": "https://wiki.bindertowngame.com/mob/opal_weaver_queen#matchup",
+    "image": "https://wiki.bindertowngame.com/img/mob/opal_weaver_queen.png"
+  },
+  {
+    "slug": "vale_warden",
+    "name": "Vale Warden",
+    "category": "Field Boss",
+    "level": 99,
+    "hp": "19,404,160",
+    "dmg": "6,144–8,490",
+    "def": 140,
+    "mdef": 62,
+    "hit": 114,
+    "flee": 45,
+    "vision": "14.0",
+    "cadence": "2.2s",
+    "respawnMinutes": 180,
+    "map": "Warden's Seat",
+    "card": "Sovereign Edict",
+    "cardAbility": "สร้างแผ่นดินนอกแนว, ผลัก/ค้าง/กดพื้นที่พร้อมอำนาจผู้พิทักษ์",
+    "cardMaxAbility": "สร้างแผ่นดินนอกแนว, ผลัก/ค้าง/กดพื้นที่พร้อมอำนาจแบบอันตรายสูงสุด",
+    "detailsUrl": "https://wiki.bindertowngame.com/mob/vale_warden#matchup",
+    "image": "https://wiki.bindertowngame.com/img/mob/vale_warden.png"
+  },
+  {
+    "slug": "vale_keeper",
+    "name": "Vale Keeper",
+    "category": "Mini-Boss",
+    "level": 22,
+    "hp": "55,899",
+    "dmg": "182–286",
+    "def": 30,
+    "mdef": 18,
+    "hit": 45,
+    "flee": 20,
+    "vision": "7.5",
+    "cadence": "1.5s",
+    "respawnMinutes": 30,
+    "map": "Ancient Ruins",
+    "card": "Root Chase",
+    "cardAbility": "ติดตรึงตามทาง, กัดและผลักกองรุกแบบบีบพื้นที่",
+    "cardMaxAbility": "ติดตรึงตามทางและเพิ่มความเร็วโจมตีด้านป้องกันสูงสุด",
+    "detailsUrl": "https://wiki.bindertowngame.com/mob/vale_keeper#matchup",
+    "image": "https://wiki.bindertowngame.com/img/mob/vale_keeper.png"
+  },
+  {
+    "slug": "dusk_herald",
+    "name": "Dusk Herald",
+    "category": "Mini-Boss",
+    "level": 47,
+    "hp": "151,923",
+    "dmg": "512–784",
+    "def": 50,
+    "mdef": 28,
+    "hit": 62,
+    "flee": 23,
+    "vision": "8.5",
+    "cadence": "1.4s",
+    "respawnMinutes": 30,
+    "map": "Duskgate Pass",
+    "card": "Night Tolls",
+    "cardAbility": "กลุ่มเป้าหมายและชะลอ, สร้างโซนความมืดแบบตามรอย",
+    "cardMaxAbility": "กลุ่มเป้าหมายและชะลอ, เพิ่มความเร็วการเรียกเงามืดและความเสียหายสูงสุด",
+    "detailsUrl": "https://wiki.bindertowngame.com/mob/dusk_herald#matchup",
+    "image": "https://wiki.bindertowngame.com/img/mob/dusk_herald.png"
+  },
+  {
+    "slug": "sky_sentinel",
+    "name": "Sky Sentinel",
+    "category": "Mini-Boss",
+    "level": 72,
+    "hp": "448,995",
+    "dmg": "1,170–1,670",
+    "def": 70,
+    "mdef": 36,
+    "hit": 78,
+    "flee": 28,
+    "vision": "9.5",
+    "cadence": "1.5s",
+    "respawnMinutes": 30,
+    "map": "Cloudspire Ruins",
+    "card": "Thunder Chase",
+    "cardAbility": "พุ่งลงมาพร้อมกระแสฟ้าผ่า, เห็นทางและกดพื้นที่แบบระยะไกล",
+    "cardMaxAbility": "พุ่งลงมาพร้อมกระแสฟ้าผ่า, เพิ่มอัตราโจมตีและความเสียหายในพื้นที่มากขึ้น",
+    "detailsUrl": "https://wiki.bindertowngame.com/mob/sky_sentinel#matchup",
+    "image": "https://wiki.bindertowngame.com/img/mob/sky_sentinel.png"
+  },
+  {
+    "slug": "elder_sprout",
+    "name": "Elder Sprout",
+    "category": "Elite",
+    "level": 5,
+    "hp": "2,013",
+    "dmg": "48–84",
+    "def": 8,
+    "mdef": 7,
+    "hit": 18,
+    "flee": 11,
+    "vision": "5.5",
+    "cadence": "1.2s",
+    "respawnMinutes": 1,
+    "map": "Southvale Field",
+    "card": "Root Bind",
+    "cardAbility": "ตรึงเป้าหมายและลดทิศทางเคลื่อนที่ในช่วงสั้น",
+    "cardMaxAbility": "ตรึงเป้าหมายและกดความเร็วแบบมากกว่าเดิม",
+    "detailsUrl": "https://wiki.bindertowngame.com/mob/elder_sprout#matchup",
+    "image": "https://wiki.bindertowngame.com/img/mob/elder_sprout.png"
+  },
+  {
+    "slug": "thicket_stag",
+    "name": "Thicket Stag",
+    "category": "Elite",
+    "level": 10,
+    "hp": "4,521",
+    "dmg": "86–165",
+    "def": 14,
+    "mdef": 9,
+    "hit": 24,
+    "flee": 12,
+    "vision": "6.5",
+    "cadence": "1.4s",
+    "respawnMinutes": 1,
+    "map": "Whispering Woods",
+    "card": "Ground Slam",
+    "cardAbility": "ทุบพื้นแบบวงกลมกระทบพื้นที่และผลักเล็กน้อย",
+    "cardMaxAbility": "ทุบพื้นแบบวงกลมและเพิ่มแรงผลัก/ความเสียหาย",
+    "detailsUrl": "https://wiki.bindertowngame.com/mob/thicket_stag#matchup",
+    "image": "https://wiki.bindertowngame.com/img/mob/thicket_stag.png"
+  },
+  {
+    "slug": "willow_brute",
+    "name": "Willow Brute",
+    "category": "Elite",
+    "level": 9,
+    "hp": "3,957",
+    "dmg": "74–145",
+    "def": 15,
+    "mdef": 8,
+    "hit": 24,
+    "flee": 11,
+    "vision": "6.0",
+    "cadence": "1.3s",
+    "respawnMinutes": 1,
+    "map": "Honeyrill",
+    "card": "Ground Slam",
+    "cardAbility": "สลับการโจมตีพื้นและบีบพื้นที่แบบแนว",
+    "cardMaxAbility": "สลับการโจมตีพื้นและสร้างโซนดิ่งที่แรงขึ้น",
+    "detailsUrl": "https://wiki.bindertowngame.com/mob/willow_brute#matchup",
+    "image": "https://wiki.bindertowngame.com/img/item/drop_willow_brute.png"
+  },
+  {
+    "slug": "tide_brute",
+    "name": "Tide Brute",
+    "category": "Elite",
+    "level": 13,
+    "hp": "6,438",
+    "dmg": "118–204",
+    "def": 18,
+    "mdef": 10,
+    "hit": 26,
+    "flee": 13,
+    "vision": "7.0",
+    "cadence": "1.4s",
+    "respawnMinutes": 1,
+    "map": "Riverside",
+    "card": "Ground Slam",
+    "cardAbility": "กระแทกพื้นแบบแนวและเพิ่มการควบคุมพื้นที่",
+    "cardMaxAbility": "กระแทกพื้นแบบแนว, ผลักและค้างได้มากขึ้น",
+    "detailsUrl": "https://wiki.bindertowngame.com/mob/tide_brute#matchup",
+    "image": "https://wiki.bindertowngame.com/img/mob/tide_brute.png"
+  },
+  {
+    "slug": "brute",
+    "name": "Brute",
+    "category": "Elite",
+    "level": 17,
+    "hp": "9,111",
+    "dmg": "150–255",
+    "def": 24,
+    "mdef": 12,
+    "hit": 30,
+    "flee": 15,
+    "vision": "7.5",
+    "cadence": "1.5s",
+    "respawnMinutes": 1,
+    "map": "Old Quarry",
+    "card": "Ground Slam",
+    "cardAbility": "ทุบพื้นและกดพื้นที่เข้าหากันแบบรุนแรง",
+    "cardMaxAbility": "ทุบพื้นและกดพื้นที่เข้าหากันแบบอันตรายสุด",
+    "detailsUrl": "https://wiki.bindertowngame.com/mob/brute#matchup",
+    "image": "https://wiki.bindertowngame.com/img/mob/brute.png"
+  },
+  {
+    "slug": "moss_brute",
+    "name": "Moss Brute",
+    "category": "Elite",
+    "level": 16,
+    "hp": "8,535",
+    "dmg": "136–238",
+    "def": 23,
+    "mdef": 11,
+    "hit": 29,
+    "flee": 14,
+    "vision": "7.5",
+    "cadence": "1.4s",
+    "respawnMinutes": 1,
+    "map": "Bracken Sink",
+    "card": "Ground Slam",
+    "cardAbility": "กระแทกพื้นและเพิ่มความเคลื่อนไหวหยุดชั่วคราว",
+    "cardMaxAbility": "กระแทกพื้นและเพิ่มแรงผลัก/ชะลอซ้ำในพื้นที่",
+    "detailsUrl": "https://wiki.bindertowngame.com/mob/moss_brute#matchup",
+    "image": "https://wiki.bindertowngame.com/img/item/drop_moss_brute.png"
+  },
+  {
+    "slug": "cinder_brute",
+    "name": "Cinder Brute",
+    "category": "Elite",
+    "level": 37,
+    "hp": "18,255",
+    "dmg": "480–760",
+    "def": 46,
+    "mdef": 20,
+    "hit": 52,
+    "flee": 20,
+    "vision": "9.0",
+    "cadence": "1.6s",
+    "respawnMinutes": 1,
+    "map": "Ember Hollow",
+    "card": "Ground Slam",
+    "cardAbility": "ทุบพื้นแบบกว้างและกระจายความร้อนล้อมพื้นที่",
+    "cardMaxAbility": "ทุบพื้นแบบกว้างและเพิ่มความเสียหายความร้อนสูง",
+    "detailsUrl": "https://wiki.bindertowngame.com/mob/cinder_brute#matchup",
+    "image": "https://wiki.bindertowngame.com/img/mob/cinder_brute.png"
+  },
+  {
+    "slug": "mire_elder",
+    "name": "Mire Elder",
+    "category": "Elite",
+    "level": 41,
+    "hp": "22,600",
+    "dmg": "560–840",
+    "def": 50,
+    "mdef": 23,
+    "hit": 56,
+    "flee": 22,
+    "vision": "9.5",
+    "cadence": "1.7s",
+    "respawnMinutes": 1,
+    "map": "Mistmire Swamp",
+    "card": "Mire Snare",
+    "cardAbility": "ดักและชะลอเป้าหมายพร้อมล้อมพื้นที่โคลน",
+    "cardMaxAbility": "ดักและชะลอเป้าหมายอย่างหนักพร้อมสร้างโซนคลื่นโคลน",
+    "detailsUrl": "https://wiki.bindertowngame.com/mob/mire_elder#matchup",
+    "image": "https://wiki.bindertowngame.com/img/mob/mire_elder.png"
+  },
+  {
+    "slug": "rime_brute",
+    "name": "Rime Brute",
+    "category": "Elite",
+    "level": 53,
+    "hp": "36,100",
+    "dmg": "850–1,480",
+    "def": 66,
+    "mdef": 30,
+    "hit": 68,
+    "flee": 26,
+    "vision": "10.5",
+    "cadence": "1.8s",
+    "respawnMinutes": 1,
+    "map": "Frostpeak Slopes",
+    "card": "Ground Slam",
+    "cardAbility": "ทุบพื้นและกระจายแผ่นน้ำแข็งรอบกึ่งกลาง",
+    "cardMaxAbility": "ทุบพื้นและกระจายแผ่นน้ำแข็งรอบกึ่งกลางแบบรุนแรง",
+    "detailsUrl": "https://wiki.bindertowngame.com/mob/rime_brute#matchup",
+    "image": "https://wiki.bindertowngame.com/img/mob/rime_brute.png"
+  },
+  {
+    "slug": "cloud_brute",
+    "name": "Cloud Brute",
+    "category": "Elite",
+    "level": 71,
+    "hp": "66,500",
+    "dmg": "1,620–2,620",
+    "def": 88,
+    "mdef": 41,
+    "hit": 81,
+    "flee": 32,
+    "vision": "11.5",
+    "cadence": "1.9s",
+    "respawnMinutes": 1,
+    "map": "Cloudspire Ruins",
+    "card": "Ground Slam",
+    "cardAbility": "ทุบพื้นและสร้างพายุลมอันตรายในจุดโจมตี",
+    "cardMaxAbility": "ทุบพื้นและสร้างพายุลมอันตรายแบบกว้างและแรงที่สุด",
+    "detailsUrl": "https://wiki.bindertowngame.com/mob/cloud_brute#matchup",
+    "image": "https://wiki.bindertowngame.com/img/mob/cloud_brute.png"
+  },
+  {
+    "slug": "vale_remnant",
+    "name": "Vale Remnant",
+    "category": "Elite",
+    "level": 81,
+    "hp": "99,500",
+    "dmg": "2,600–3,960",
+    "def": 118,
+    "mdef": 52,
+    "hit": 95,
+    "flee": 36,
+    "vision": "12.5",
+    "cadence": "2.0s",
+    "respawnMinutes": 1,
+    "map": "Shattered Vale",
+    "card": "Phantom Lunge",
+    "cardAbility": "กระโดดโจมตีและพุ่งเข้าหาเป้าหมายแบบรุนแรง",
+    "cardMaxAbility": "กระโดดโจมตีและพุ่งเข้าหาเป้าหมายแบบรุนแรงสุด",
+    "detailsUrl": "https://wiki.bindertowngame.com/mob/vale_remnant#matchup",
+    "image": "https://wiki.bindertowngame.com/img/mob/vale_remnant.png"
+  },
+  {
+    "slug": "throne_guard",
+    "name": "Throne Guard",
+    "category": "Elite",
+    "level": 99,
+    "hp": "146,000",
+    "dmg": "3,500–5,180",
+    "def": 140,
+    "mdef": 62,
+    "hit": 105,
+    "flee": 40,
+    "vision": "13.0",
+    "cadence": "2.1s",
+    "respawnMinutes": 1,
+    "map": "Throne of the Warden",
+    "card": "Phantom Lunge",
+    "cardAbility": "สลับการเคลื่อนที่และไล่ติดแบบกรีดพื้นที่",
+    "cardMaxAbility": "สลับการเคลื่อนที่และไล่ติดแบบกรีดพื้นที่แบบแรงสุด",
+    "detailsUrl": "https://wiki.bindertowngame.com/mob/throne_guard#matchup",
+    "image": "https://wiki.bindertowngame.com/img/mob/throne_guard.png"
+  }
+];
+
+function ensureDataFile() {
+  if (!fs.existsSync(DATA_DIR)) {
+    fs.mkdirSync(DATA_DIR, { recursive: true });
+  }
+  if (!fs.existsSync(DATA_FILE)) {
+    fs.writeFileSync(DATA_FILE, JSON.stringify({}, null, 2));
+  }
+}
+
+function readTimerData() {
+  ensureDataFile();
+  const raw = fs.readFileSync(DATA_FILE, 'utf8');
+  try {
+    return JSON.parse(raw) || {};
+  } catch (error) {
+    return {};
+  }
+}
+
+function writeTimerData(data) {
+  ensureDataFile();
+  fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
+}
+
+function normalizeRecord(record, slug) {
+  const remainingHours = Number(record?.remainingHours ?? 0);
+  const remainingSeconds = Number(record?.remainingSeconds ?? 0);
+  const remainingMinutes = Number(record?.remainingMinutes ?? 0);
+  const keyed = typeof record?.updatedAt === 'string' ? new Date(record.updatedAt).toISOString() : new Date().toISOString();
+  return {
+    slug,
+    remainingHours: Number.isFinite(remainingHours) ? Math.max(0, remainingHours) : 0,
+    remainingSeconds: Number.isFinite(remainingSeconds) ? Math.max(0, remainingSeconds) : 0,
+    remainingMinutes: Number.isFinite(remainingMinutes) ? Math.max(0, remainingMinutes) : 0,
+    recordedBy: String(record?.recordedBy || 'Unknown').trim() || 'Unknown',
+    userIp: String(record?.userIp || 'unknown').trim() || 'unknown',
+    updatedAt: keyed
+  };
+}
+
+function getClientIp(req) {
+  const forwarded = req.headers['x-forwarded-for'];
+  if (typeof forwarded === 'string') {
+    return forwarded.split(',')[0].trim();
+  }
+  return req.socket.remoteAddress || req.ip || 'unknown';
+}
+
+app.use(express.json({ limit: '1mb' }));
+app.use('/sound', express.static(path.join(__dirname, 'sound')));
+app.use('/image', express.static(path.join(__dirname, 'image')));
+
+app.get('/app.js', (_req, res) => {
+  res.sendFile(path.join(__dirname, 'app.js'));
+});
+
+app.get('/styles.css', (_req, res) => {
+  res.sendFile(path.join(__dirname, 'styles.css'));
+});
+
+app.get('/bosses.json', (_req, res) => {
+  res.sendFile(path.join(__dirname, 'bosses.json'));
+});
+
+app.get('/api/health', (_req, res) => {
+  res.json({ ok: true, time: new Date().toISOString() });
+});
+
+app.get('/api/bosses', (_req, res) => {
+  const savedTimers = readTimerData();
+  const data = BOSS_CATALOG.map((boss) => {
+    const record = savedTimers[boss.slug];
+    return {
+      ...boss,
+      timer: record ? normalizeRecord(record, boss.slug) : null
+    };
+  });
+  res.json({ bosses: data });
+});
+
+app.post('/api/bosses/:slug', (req, res) => {
+  const slug = req.params.slug;
+  const boss = BOSS_CATALOG.find((item) => item.slug === slug);
+
+  if (!boss) {
+    return res.status(404).json({ error: 'Boss not found' });
+  }
+
+  const body = req.body || {};
+  const name = String(body.name || '').trim();
+  const ip = getClientIp(req);
+  const remainingHours = Number(body.remainingHours ?? 0);
+  const remainingMinutes = Number(body.remainingMinutes ?? body.remaining ?? boss.respawnMinutes ?? 0);
+  const remainingSeconds = Number(body.remainingSeconds ?? Math.max(0, remainingMinutes * 60));
+
+  if (!name) {
+    return res.status(400).json({ error: 'Name is required before saving boss time.' });
+  }
+
+  if (!ip || ip === 'unknown') {
+    return res.status(400).json({ error: 'Unable to detect IP for this session.' });
+  }
+
+  const prepared = normalizeRecord({
+    recordedBy: name,
+    userIp: ip,
+    remainingHours,
+    remainingMinutes,
+    remainingSeconds,
+    updatedAt: new Date().toISOString()
+  }, slug);
+
+  const savedTimers = readTimerData();
+  savedTimers[slug] = prepared;
+  writeTimerData(savedTimers);
+
+  res.json({ success: true, boss: boss.name, timer: prepared });
+});
+
+app.get('*', (_req, res) => {
+  res.sendFile(INDEX_FILE);
+});
+
+app.listen(PORT, () => {
+  console.log(`Binder Town Boss Timer running at http://localhost:${PORT}`);
+});

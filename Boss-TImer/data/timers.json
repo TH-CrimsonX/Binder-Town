@@ -1,0 +1,18 @@
+{
+  "bloom_crowned_stag": {
+    "slug": "bloom_crowned_stag",
+    "remainingSeconds": 0,
+    "remainingMinutes": 70,
+    "recordedBy": "123",
+    "userIp": "::1",
+    "updatedAt": "2026-10-19T17:35:10.812Z"
+  },
+  "prism_shell_sovereign": {
+    "slug": "prism_shell_sovereign",
+    "remainingSeconds": 0,
+    "remainingMinutes": 5,
+    "recordedBy": "Pop",
+    "userIp": "::1",
+    "updatedAt": "2026-10-19T17:21:03.978Z"
+  }
+}
