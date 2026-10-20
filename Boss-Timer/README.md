@@ -1,6 +1,20 @@
-# Binder Town Boss Timer
+<p align="right">
+  <a href="https://github.com/TH-CrimsonX/Binder-Town"><img src="https://img.shields.io/github/stars/TH-CrimsonX/Binder-Town?style=for-the-badge&logo=github&logoColor=white&color=242938" alt="GitHub stars"></a>
+  <a href="https://github.com/TH-CrimsonX/Binder-Town/commits"><img src="https://img.shields.io/github/last-commit/TH-CrimsonX/Binder-Town?style=for-the-badge&logo=git&logoColor=white&color=343b52" alt="Last commit"></a>
+  <img src="https://img.shields.io/badge/Node.js-18%2B-43853d?style=for-the-badge&logo=node.js&logoColor=white" alt="Node.js 18+">
+  <img src="https://img.shields.io/badge/Express-Backend-343b52?style=for-the-badge&logo=express&logoColor=white" alt="Express backend">
+  <img src="https://img.shields.io/badge/GitHub_Pages-Live-7c5cff?style=for-the-badge&logo=githubpages&logoColor=white" alt="GitHub Pages">
+</p>
 
-เว็บแสดงและนับเวลาบอสในเกม Binder Town พร้อมเสียงแจ้งเตือนและระบบบันทึกเวลาเกิดบอส
+<h1 align="center">Binder Town Boss Timer</h1>
+
+<p align="center">เว็บแสดงและนับเวลาบอสในเกม Binder Town พร้อมเสียงแจ้งเตือนและระบบบันทึกเวลาเกิดบอส</p>
+
+<p align="center">
+  <a href="https://TH-CrimsonX.github.io/Binder-Town/Boss-Timer/"><img src="https://img.shields.io/badge/เปิดเว็บไซต์-เริ่มใช้งาน-7c5cff?style=for-the-badge&logo=googlechrome&logoColor=white" alt="เปิดเว็บไซต์ Binder Town Boss Timer"></a>
+</p>
+
+> README ใช้ชุดสีโทนมืดสำหรับ badges และป้ายกำกับ ส่วนสีพื้นหลังจะปรับตามธีม GitHub ที่ผู้ใช้เลือก
 
 ## ความสามารถ
 
