@@ -42,10 +42,12 @@
   function segs() {
     return location.pathname.replace(/\\/g, "/").split("/").filter(Boolean);
   }
-  /* path รากเว็บจากหน้าปัจจุบัน — นับ depth จากจำนวน segment */
+  /* path รากเว็บจากหน้าปัจจุบัน — ไม่นับ project prefix บน GitHub Pages */
   function root() {
     const s = segs();
-    const depth = s.filter((x) => !x.includes(".")).length;
+    const depth =
+      s.filter((x) => !x.includes(".")).length -
+      (s[0] && s[0].toLowerCase() === "binder-town" ? 1 : 0);
     return depth === 0 ? "./" : "../".repeat(depth);
   }
   /* โฟลเดอร์ปลายทางของแต่ละหน้า */
