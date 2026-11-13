@@ -1,0 +1,18 @@
+/* Binder Town — ปรับตัวอักษรกระชับ (ตามสไตล์วิกิ) ใช้ร่วมทุกหน้า
+   โหลดหลัง styles.css ของหน้านั้น ๆ */
+:root { --fs-base: 13.5px; }
+body {
+  font-size: var(--fs-base);
+  line-height: 1.5 !important;
+}
+h1 { font-size: 1.4rem !important; margin: 0 0 .35rem !important; }
+h2 { font-size: 1.12rem !important; margin: 0 0 .55rem !important; }
+h3 { font-size: .98rem !important; margin: 1rem 0 .5rem !important; }
+p, li, td, th, label, input, select, button, .hint, .empty { font-size: .84rem; }
+p { margin: .35rem 0; }
+li { margin-bottom: .2rem; }
+table { line-height: 1.45; }
+.sum-table th, .sum-table td, .item-table th, .item-table td { padding: 5px 8px !important; }
+.card, .bt-card { padding: clamp(12px, 2.4vw, 20px) !important; }
+.bag-card, .mob-card, .map-card, .g-card, .tool-card { font-size: .82rem; }
+.bag-card p, .mob-card .meta, .map-card .sub { font-size: .78rem; }

@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Region Gearbook — ชุดประจำภูมิภาค Binder Town ทั้ง 12 ชุด" />
+    <title>Region Gearbook — Binder Town Tools</title>
+    <link rel="icon" type="image/png" href="https://wiki.bindertowngame.com/img/ui/logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../../Tools/Card-Simulator/styles.css" />
+  </head>
+  <body>
+    <main class="page">
+      <section class="card">
+        <h2>กติกาชุด</h2>
+        <p class="hint">
+          อุปกรณ์ชุดประจำภูมิภาค มี 12 ชุด (ภูมิภาคละ 3) · ทุกอาชีพใส่ได้ ·
+          นับชิ้นที่สวมอยู่ของชุดเดียวกัน (ชิ้นพังไม่นับ) — ใส่ 2 ชิ้นเปิดกติกาเล็ก · 4 ชิ้นเปิดกติกาใหญ่ (กติกาเล็กยังอยู่)
+          · ข้อมูลจาก <a href="https://wiki.bindertowngame.com/systems/region-sets" target="_blank" rel="noopener">Wiki — Region Set</a>
+        </p>
+        <div class="set-meta">
+          <div><b>ส่วนที่เป็นชิ้นชุดได้</b><span>มือรอง · เกราะ · สร้อยคอ · เข็มขัด · รองเท้า · เครื่องประดับ (แหวน)</span></div>
+          <div><b>ส่วนที่เป็นชุดไม่ได้</b><span>อาวุธ · หมวก · หน้า · ปาก</span></div>
+      <div><b>ดรอปที่ไหน</b><span>เฉพาะในภูมิภาคของชุด — เป็นอุปกรณ์ช่อง มือรอง / ชุดเกราะ / สร้อยคอ / เข็มขัด / รองเท้า / ประดับ: มอนทั่วไป 5% · Elite 15% · Mini-boss 30% ของชิ้นที่ดรอป</span></div>
+          <div><b>Affix บนชิ้นชุด</b><span>ไม่เกิน 2 แถว (Normal / Magic) — ช่องที่ใส่ชุดคือช่องที่ไม่ได้ใส่ชิ้น Rare / Epic</span></div>
+          <div><b>เพิ่ม Tier ได้</b><span>Reforge ยก Tier ชิ้นในชุดได้ (ชุดยังอยู่) — ใช้ชุดจากภูมิภาคแรกๆ ได้ถึง Lv 99 · ขาย / เทรด / ฝากได้ตามปกติ</span></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>ชุดทั้งหมด</h2>
+        <div id="sets-list"></div>
+      </section>
+    </main>
+
+    <div class="toast" id="toast" role="status" hidden></div>
+
+    <script src="../../Tools/nav.js"></script>
+    <script src="../../Tools/bt-data-loader.js"></script>
+    <script src="../../Data/_common.js"></script>
+    <script src="gearbook.js"></script>
+  </body>
+</html>
+

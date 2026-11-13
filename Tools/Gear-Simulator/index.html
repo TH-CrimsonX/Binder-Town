@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Gear Simulator — จำลองอุปกรณ์ Binder Town ตัวละคร + กระเป๋าไอเท็ม ลากเลเวลคำนวณสเตตัส"
+    />
+    <title>Gear Simulator — Binder Town</title>
+    <link
+      rel="icon"
+      type="image/png"
+      href="https://wiki.bindertowngame.com/img/ui/logo.png"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="../nav.js"></script>
+  </head>
+  <body>
+    <main class="page">
+      <section class="card">
+        <h2>ชุดของฉัน</h2>
+
+        <div class="summary-btns" style="margin-bottom: 16px">
+          <input
+            id="build-name"
+            type="text"
+            placeholder="ชื่อชุดของฉัน"
+            maxlength="40"
+            style="max-width: 220px"
+          />
+          <button class="btn" id="btn-save">💾 บันทึกชุดนี้</button>
+          <button class="btn ghost" id="btn-share">🔗 แชร์ชุดนี้</button>
+          <button class="btn ghost" id="btn-clear">🧹 ล้างทั้งชุด</button>
+          <button class="btn ghost" id="btn-undo">↺ Undo</button>
+        </div>
+        <div id="saved-list" class="saved-list"></div>
+
+        <div class="sim-layout">
+          <!-- ===== ตัวละคร (ซ้าย) ===== -->
+          <div class="char-panel">
+            <div class="char-head">
+              <img
+                src="https://wiki.bindertowngame.com/img/ui/logo.png"
+                alt=""
+              />
+              <div>
+                <b id="cv-name">ชุดของฉัน</b>
+                <span id="cv-sub">ไม่ระบุอาชีพ · Lv 0</span>
+              </div>
+            </div>
+            <div class="char-body">
+              <div class="slot-col" id="col-left"></div>
+              <div class="char-center">
+                <img
+                  id="char-sprite"
+                  src="img/jobs/scout_m.png"
+                  alt="ตัวละคร"
+                />
+                <div class="char-lv">
+                  <output id="lv-out">Lv 0</output>
+                  <input
+                    id="lv-slider"
+                    type="range"
+                    min="1"
+                    max="115"
+                    value="1"
+                    step="1"
+                    aria-label="เลเวลไอเท็ม"
+                  />
+                  <small id="lv-tier">Tier สูงสุดที่ปลด: T1</small>
+                  <div class="gender-row">
+                    <button
+                      type="button"
+                      class="chip gender-btn"
+                      data-gender="m"
+                      aria-pressed="true"
+                      title="ตัวละครชาย"
+                    >
+                      ♂ ชาย
+                    </button>
+                    <button
+                      type="button"
+                      class="chip gender-btn"
+                      data-gender="f"
+                      aria-pressed="false"
+                      title="ตัวละครหญิง"
+                    >
+                      ♀ หญิง
+                    </button>
+                  </div>
+                  <div class="job-chip-row" id="job-icons"></div>
+                </div>
+              </div>
+              <div class="slot-col" id="col-right"></div>
+            </div>
+            <div class="job-chip-row" id="job-icons-mobile" hidden></div>
+          </div>
+
+          <!-- ===== กระเป๋า (ขวา) ===== -->
+          <div class="bag">
+            <div
+              class="bag-tabs"
+              id="bag-tabs"
+              role="tablist"
+              aria-label="เลือกส่วนอุปกรณ์"
+            ></div>
+            <div class="filters">
+              <select id="bag-rar"></select>
+              <label class="bag-lv"
+                >Lv
+                <input
+                  id="bag-lvmin"
+                  type="number"
+                  min="1"
+                  max="115"
+                  value="1"
+                />
+                –
+                <input
+                  id="bag-lvmax"
+                  type="number"
+                  min="1"
+                  max="115"
+                  value="115"
+                />
+              </label>
+              <label class="job-filter">
+                <input id="bag-jobonly" type="checkbox" />
+                ค้นหาตรงกับอาชีพ
+              </label>
+              <div id="bag-wtype-btns" class="wtype-btns" hidden></div>
+              <div class="select-wrap">
+                <select id="bag-item">
+                  <option value="">ไอเท็ม: ทั้งหมด</option>
+                </select>
+              </div>
+            </div>
+            <div id="bag-item-info" class="bag-item-info" hidden></div>
+        <div class="bag-content" id="bag-content"></div>
+            <p class="hint" id="bag-count" style="margin: 10px 0 0"></p>
+          </div>
+        </div>
+
+        <h3>สรุปพลังทั้งชุด</h3>
+        <div id="summary-out">
+          <p class="empty">
+            ยังไม่มีออฟชั่น — เลือกจากกระเป๋าฝั่งขวาแล้วกด "ใส่"
+            ระบบจะรวมค่าให้ที่นี่
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <div class="toast" id="toast" role="status" hidden></div>
+    <div id="gametip" hidden></div>
+
+    <script src="../../Data/jobgear.js"></script>
+    <script src="data-loader.js"></script>
+    <script src="common.js"></script>
+    <script src="../../Data/item-affixes.js"></script>
+    <script src="jobicons.js"></script>
+    <script src="simulator.js"></script>
+  </body>
+</html>

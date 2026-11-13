@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Monster Codex — ข้อมูลมอนสเตอร์ Binder Town ครบทุกตัว" />
+    <title>Monster Codex — Binder Town</title>
+    <link rel="icon" type="image/png" href="https://wiki.bindertowngame.com/img/ui/logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../../Tools/Card-Simulator/styles.css" />
+  </head>
+  <body>
+    <main class="page">
+      <section class="card">
+        <h2>มอนสเตอร์ทั้งหมด</h2>
+        <p class="hint">มอนทุกตัวในเกม — ภาพ pixel-art จากตัวเกม · อ้างอิงจาก Binder Town Wiki</p>
+        <div class="filters">
+          <input id="m-search" type="search" placeholder="ค้นหาชื่อมอน…" style="flex:1;min-width:180px" />
+          <select id="m-region"></select>
+          <select id="m-role">
+            <option value="">ทุกบทบาท</option>
+          </select>
+        </div>
+        <p class="hint" id="m-count"></p>
+        <div class="card-grid" id="mob-list"></div>
+      </section>
+    </main>
+
+    <div class="toast" id="toast" role="status" hidden></div>
+
+    <script src="../../Data/mobs.js"></script>
+    <script src="../../Tools/nav.js"></script>
+    <script src="monster.js"></script>
+  </body>
+</html>

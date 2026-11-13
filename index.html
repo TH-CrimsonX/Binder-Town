@@ -1,383 +1,514 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="th">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Binder Town Boss Timer — เว็บติดตามเวลาบอส พร้อมเสียงแจ้งเตือน"
+      content="Binder Town — หน้าแรก ข้อมูลเกมและเครื่องมือทั้งหมด (Tools) อ้างอิงจากตัวเกมและ Binder Town Wiki"
     />
-    <meta name="theme-color" content="#07131f" />
-    <title>Binder Town Boss Timer</title>
-    <link rel="icon" type="image/png" href="https://wiki.bindertowngame.com/img/ui/logo.png" />
+    <title>Binder Town — ข้อมูลเกมและ Tools</title>
+    <link
+      rel="icon"
+      type="image/png"
+      href="https://wiki.bindertowngame.com/img/ui/logo.png"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <style>
       :root {
         color-scheme: dark;
         --bg: #07131f;
-        --panel: rgba(17, 29, 40, 0.9);
-        --line: rgba(168, 190, 214, 0.16);
+        --panel: rgba(17, 29, 40, 0.92);
+        --line: rgba(168, 190, 214, 0.18);
         --text: #edf4ff;
         --muted: #9ab0c6;
         --accent: #59d0ff;
         --accent-strong: #00b1ff;
         --gold: #ffc857;
+        --shadow: 0 18px 48px rgba(0, 0, 0, 0.35);
       }
-
       * {
         box-sizing: border-box;
       }
-
       html {
         scroll-behavior: smooth;
       }
-
       body {
-        min-height: 100vh;
         margin: 0;
+        min-height: 100vh;
+        font-family: "Prompt", sans-serif;
         color: var(--text);
         background:
-          radial-gradient(ellipse at top, rgba(35, 91, 124, 0.3), transparent 45%),
-          linear-gradient(180deg, #07131f, #0b1824 65%, #07131f);
-        font-family: "Segoe UI", "Noto Sans Thai", Tahoma, sans-serif;
+          radial-gradient(
+            ellipse at top,
+            rgba(35, 91, 124, 0.3),
+            transparent 45%
+          ),
+          linear-gradient(180deg, #07131f, #0b1824 65%, #07131f),
+          url("Data/map-bg.png") center/cover no-repeat fixed;
         line-height: 1.7;
       }
-
       a {
         color: var(--accent);
         text-underline-offset: 0.2em;
       }
-
       a:hover {
         color: #a5e8ff;
       }
-
       .page {
-        width: min(920px, calc(100% - 32px));
+        width: min(1100px, calc(100% - 24px));
         margin: 0 auto;
       }
 
-      .badges {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: flex-end;
-        gap: 8px;
-        padding: 22px 0 10px;
-      }
-
-      .badges img {
-        height: 28px;
-      }
-
       .hero {
-        padding: 28px 20px 42px;
+        padding: 34px 20px 20px;
         text-align: center;
       }
-
-      .logo {
+      .hero .logo {
         width: 88px;
         height: 88px;
         margin: 0 auto 14px;
         object-fit: contain;
         filter: drop-shadow(0 8px 24px rgba(0, 177, 255, 0.18));
       }
-
-      h1 {
+      .hero h1 {
         margin: 0;
-        font-size: clamp(2rem, 5vw, 3.1rem);
-        line-height: 1.2;
+        font-size: clamp(2rem, 5vw, 3rem);
       }
-
-      .subtitle {
-        max-width: 650px;
-        margin: 14px auto 0;
+      .hero p {
         color: var(--muted);
-        font-size: 1.05rem;
-      }
-
-      .game-link {
-        display: inline-block;
-        margin-top: 8px;
-        font-size: 0.96rem;
-      }
-
-      .website-cta {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        margin-top: 26px;
-        padding: 13px 24px;
-        border: 1px solid rgba(89, 208, 255, 0.48);
-        border-radius: 12px;
-        color: #03131c;
-        background: linear-gradient(135deg, #8ee4ff, var(--accent-strong));
-        box-shadow: 0 10px 30px rgba(0, 177, 255, 0.2);
-        font-weight: 750;
-        text-decoration: none;
-        transition: transform 160ms ease, box-shadow 160ms ease;
-      }
-
-      .website-cta:hover {
-        color: #03131c;
-        box-shadow: 0 14px 34px rgba(0, 177, 255, 0.3);
-        transform: translateY(-2px);
+        max-width: 640px;
+        margin: 12px auto 0;
       }
 
       .section {
         margin: 0 0 20px;
-        padding: 26px clamp(20px, 5vw, 36px);
+        padding: 26px clamp(18px, 4vw, 32px);
         border: 1px solid var(--line);
         border-radius: 16px;
         background: var(--panel);
-        box-shadow: 0 18px 48px rgba(0, 0, 0, 0.16);
+        box-shadow: var(--shadow);
       }
-
-      h2 {
-        margin: 0 0 18px;
+      .section h2 {
+        margin: 0 0 16px;
         padding-bottom: 10px;
         border-bottom: 1px solid var(--line);
-        font-size: 1.45rem;
+        font-size: 1.4rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .h-icon {
+        width: 1.6rem;
+        height: 1.6rem;
+        object-fit: contain;
+        flex: none;
       }
 
-      .features {
+      .tool-grid {
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
         gap: 14px;
+      }
+      .tool-card {
+        display: block;
+        padding: 20px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+        color: var(--text);
+        text-decoration: none;
+        transition:
+          transform 160ms ease,
+          border-color 160ms ease;
+      }
+      .tool-card:hover {
+        transform: translateY(-3px);
+        border-color: rgba(89, 208, 255, 0.5);
+      }
+      .tool-card .emoji {
+        font-size: 2rem;
+        height: 2.4rem;
+        display: inline-flex;
+        align-items: center;
+      }
+      .tool-card .emoji img {
+        width: 2.2rem;
+        height: 2.2rem;
+        object-fit: contain;
+        filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.35));
+      }
+      .tool-card b {
+        display: block;
+        margin: 10px 0 6px;
+        font-size: 1.1rem;
+      }
+      .tool-card span {
+        color: var(--muted);
+        font-size: 0.92rem;
+        line-height: 1.6;
+      }
+
+      .info-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.95rem;
+      }
+      .info-table th,
+      .info-table td {
+        padding: 8px 10px;
+        border-bottom: 1px solid var(--line);
+        text-align: left;
+      }
+      .info-table th {
+        color: var(--muted);
+        font-weight: 500;
+        font-size: 0.85rem;
+      }
+
+      .patch-list {
+        list-style: none;
         margin: 0;
         padding: 0;
-        list-style: none;
+        display: grid;
+        gap: 10px;
       }
-
-      .features li {
-        padding: 14px;
-        border: 1px solid var(--line);
-        border-radius: 12px;
-        color: #dce9f5;
-        background: rgba(7, 19, 31, 0.62);
+      .patch-list li {
+        padding: 12px 16px;
+        border-left: 3px solid var(--gold);
+        border-radius: 0 10px 10px 0;
+        background: rgba(255, 200, 87, 0.06);
+        color: var(--muted);
+        font-size: 0.92rem;
       }
-
-      .steps {
-        margin: 0 0 12px;
-      }
-
-      pre {
-        overflow-x: auto;
-        margin: 14px 0;
-        padding: 18px 20px;
-        border: 1px solid var(--line);
-        border-radius: 12px;
-        color: #e4f2ff;
-        background: rgba(5, 14, 23, 0.82);
-        font: 0.95rem/1.65 Consolas, "Cascadia Code", monospace;
-      }
-
-      code {
-        color: #b9eaff;
-        font-family: Consolas, "Cascadia Code", monospace;
+      .patch-list b {
+        color: var(--text);
       }
 
       .note {
-        margin: 18px 0 0;
         padding: 14px 16px;
         border-left: 3px solid var(--gold);
         border-radius: 0 8px 8px 0;
         color: var(--muted);
         background: rgba(255, 200, 87, 0.06);
       }
-
-      .tree {
-        margin: 0;
-        padding: 18px;
-        overflow-x: auto;
-        border: 1px solid var(--line);
-        border-radius: 12px;
-        background: rgba(5, 14, 23, 0.82);
-        color: #cfe0ef;
-        font: 0.86rem/1.6 Consolas, "Cascadia Code", monospace;
-      }
-
-      .tree-note {
-        margin: 10px 0 0;
-        color: var(--muted);
-        font-size: 0.9rem;
-      }
-
-      footer {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        padding: 20px 0 30px;
-        color: var(--muted);
-        font-size: 0.92rem;
-      }
-
-      .avatar {
-        width: 22px;
-        height: 22px;
-        border: 1px solid var(--line);
-        border-radius: 50%;
-        object-fit: cover;
-      }
-
-      footer strong {
-        color: var(--text);
-      }
-
       @media (max-width: 640px) {
         .page {
-          width: min(100% - 20px, 560px);
-        }
-
-        .badges {
-          justify-content: center;
-          gap: 6px;
-          padding-top: 16px;
-        }
-
-        .badges img {
-          height: 24px;
-        }
-
-        .hero {
-          padding: 26px 8px 32px;
-        }
-
-        .section {
-          padding: 22px 18px;
-        }
-
-        .features {
-          grid-template-columns: 1fr;
-        }
-
-        .tree {
-          font-size: 0.78rem;
-        }
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        html {
-          scroll-behavior: auto;
-        }
-
-        *,
-        *::before,
-        *::after {
-          transition-duration: 0.01ms !important;
+          width: calc(100% - 20px);
         }
       }
     </style>
   </head>
   <body>
     <div class="page">
-      <div class="badges" aria-label="Project badges">
-        <a href="https://github.com/TH-CrimsonX/Binder-Town" aria-label="GitHub repository">
-          <img
-            src="https://img.shields.io/github/stars/TH-CrimsonX/Binder-Town?style=for-the-badge&logo=github&logoColor=white&color=242938"
-            alt="GitHub stars"
-          />
-        </a>
-        <a href="https://github.com/TH-CrimsonX/Binder-Town/commits" aria-label="Recent commits">
-          <img
-            src="https://img.shields.io/github/last-commit/TH-CrimsonX/Binder-Town?style=for-the-badge&logo=git&logoColor=white&color=343b52"
-            alt="Last commit"
-          />
-        </a>
-        <img
-          src="https://img.shields.io/badge/Node.js-18%2B-43853d?style=for-the-badge&logo=node.js&logoColor=white"
-          alt="Node.js 18+"
-        />
-        <img
-          src="https://img.shields.io/badge/Express-Backend-343b52?style=for-the-badge&logo=express&logoColor=white"
-          alt="Express backend"
-        />
-      </div>
-
       <header class="hero">
         <img
           class="logo"
           src="https://wiki.bindertowngame.com/img/ui/logo.png"
           alt="Binder Town Logo"
         />
-        <h1>Binder Town Boss Timer</h1>
-        <p class="subtitle">
-          เว็บติดตามเวลาบอส พร้อมเสียงแจ้งเตือนสำหรับเกม Binder Town<br />
-          โดยสามารถเข้าเล่นเกมได้ที่
-          <a class="game-link" href="https://play.bindertowngame.com/">Binder Town</a>
+        <h1>Binder Town</h1>
+        <p>
+          ศูนย์รวมข้อมูลเกมและเครื่องมือ (Tools) — ข้อมูลอ้างอิงจากตัวเกม
+          <a href="https://play.bindertowngame.com/">play.bindertowngame.com</a>
+          และ <a href="https://wiki.bindertowngame.com/">Binder Town Wiki</a>
         </p>
-        <a
-          class="website-cta"
-          href="https://TH-CrimsonX.github.io/Binder-Town/Boss-Timer/"
-        >
-          <span aria-hidden="true">🚀</span>
-          เวอร์ชันบนเว็บไซต์
-        </a>
       </header>
 
       <main>
-        <section class="section" aria-labelledby="features-title">
-          <h2 id="features-title">ความสามารถ</h2>
-          <ul class="features">
-            <li>แสดงบอส Elite, Mini-Boss และ Field Boss พร้อมเวลานับถอยหลัง</li>
-            <li>ตั้งเวลาเกิดบอสและบันทึกเวลา</li>
-            <li>แจ้งเตือนด้วยเสียงเมื่อบอสใกล้เกิด</li>
+        <section class="section" aria-labelledby="tools-title">
+          <h2 id="tools-title">
+            <img
+              class="h-icon"
+              src="https://wiki.bindertowngame.com/img/item/mithril_ore.png"
+              alt=""
+            />
+            Tools — เครื่องมือ
+          </h2>
+          <div class="tool-grid">
+            <a class="tool-card" href="Tools/Build-Simulator/index.html">
+              <span class="emoji" aria-hidden="true"
+                ><img
+                  src="https://wiki.bindertowngame.com/img/item/mithril_ore.png"
+                  alt=""
+                  loading="lazy"
+              /></span>
+              <b>Build Simulator (จำลองการสร้างบิลด์)</b>
+              <span
+                >ประกอบบิลด์ทั้งชุด — ออฟชั่นอุปกรณ์ จารึก การ์ด
+                และสรุปสเตตัสรวมในหน้าเดียว</span
+              >
+            </a>
+            <a class="tool-card" href="Tools/Gear-Simulator/index.html">
+              <span class="emoji" aria-hidden="true"
+                ><img
+                  src="https://wiki.bindertowngame.com/img/item/copper_ore.png"
+                  alt=""
+                  loading="lazy"
+              /></span>
+              <b>Gear Simulator (จำลองอุปกรณ์)</b>
+              <span
+                >ตัวละคร + กระเป๋าไอเท็มแบบในเกม — ลากเลเวลคำนวณ Tier
+                แล้วเลือกออฟชั่นสวมใส่ได้ทันที</span
+              >
+            </a>
+            <a class="tool-card" href="Tools/Card-Simulator/index.html">
+              <span class="emoji" aria-hidden="true"
+                ><img
+                  src="https://wiki.bindertowngame.com/img/item/loose_spirit.png"
+                  alt=""
+                  loading="lazy"
+              /></span>
+              <b>Card Book Simulator (จำลองสมุดการ์ด)</b>
+              <span
+                >ทดลองใส่การ์ด 9 ช่อง ดู Resonance และ Spirit Load
+                พร้อมค้นหาต้นทางการ์ดทุกใบ</span
+              >
+            </a>
+            <a class="tool-card" href="Tools/Boss-Timer/index.html">
+              <span class="emoji" aria-hidden="true"
+                ><img
+                  src="https://wiki.bindertowngame.com/img/mob/vale_keeper.png"
+                  alt=""
+                  loading="lazy"
+              /></span>
+              <b>Boss Timer (ตัวจับเวลาเกิดบอส)</b>
+              <span
+                >ตัวนับเวลาเกิดบอส Elite / Mini-Boss / Field Boss
+                พร้อมเสียงแจ้งเตือนและบันทึกเวลา</span
+              >
+            </a>
+          </div>
+        </section>
+
+        <section class="section" aria-labelledby="info-title">
+          <h2 id="info-title">
+            <img
+              class="h-icon"
+              src="https://wiki.bindertowngame.com/img/item/star_shard.png"
+              alt=""
+            />
+            Data — ข้อมูลเกม
+          </h2>
+          <div class="tool-grid">
+            <a class="tool-card" href="Data/Armory/index.html">
+              <span class="emoji" aria-hidden="true"
+                ><img
+                  src="https://wiki.bindertowngame.com/img/item/iron_sword.png"
+                  alt=""
+                  loading="lazy"
+              /></span>
+              <b>Armory (คลังแสง)</b>
+              <span
+                >ไอเท็มทุกชิ้นในเกม ครบทุกช่วงเลเวล พร้อมไอคอนจากตัวเกม
+                กรองเลเวลช่วง / มือหลัก-รอง</span
+              >
+            </a>
+            <a class="tool-card" href="Data/Gearbook/index.html">
+              <span class="emoji" aria-hidden="true"
+                ><img
+                  src="https://wiki.bindertowngame.com/img/item/buckler.png"
+                  alt=""
+                  loading="lazy"
+              /></span>
+              <b>Region Gearbook (ชุดภูมิภาค)</b>
+              <span
+                >ชุดประจำภูมิภาคทั้ง 12 ชุด พร้อมกติกาใส่ 2 ชิ้น / 4 ชิ้น
+                และจุดดรอปของแต่ละภูมิภาค</span
+              >
+            </a>
+            <a class="tool-card" href="Data/Glossary/index.html">
+              <span class="emoji" aria-hidden="true"
+                ><img
+                  src="https://wiki.bindertowngame.com/img/item/exp_scroll.png"
+                  alt=""
+                  loading="lazy"
+              /></span>
+              <b>Mechanics Codex (ตำรากลไก)</b>
+              <span
+                >สีความหายาก จำกัดแถว ตาราง Tier โอกาสสุ่ม และกติกา Reroll
+                ทั้งหมดในหน้าเดียว</span
+              >
+            </a>
+            <a class="tool-card" href="Data/Smith/index.html">
+              <span class="emoji" aria-hidden="true"
+                ><img
+                  src="https://wiki.bindertowngame.com/img/item/repair_kit.png"
+                  alt=""
+                  loading="lazy"
+              /></span>
+              <b>Inscription Codex (จารึกอุปกรณ์)</b>
+              <span
+                >จารึกครบทั้ง 40 ตัว จัดตามอาชีพและภูมิภาค
+                พร้อมโควตาตามเลเวลตัวละคร</span
+              >
+            </a>
+            <a class="tool-card" href="Data/Card/index.html">
+              <span class="emoji" aria-hidden="true"
+                ><img
+                  src="https://wiki.bindertowngame.com/img/item/spirit_card.png"
+                  alt=""
+                  loading="lazy"
+              /></span>
+              <b>Card Codex (ตำราการ์ด)</b>
+              <span
+                >การ์ดทั้งหมด 160 ใบ — ผลการ์ด ต้นทางมอน ภูมิภาค และกติกา
+                Resonance / Spirit Load</span
+              >
+            </a>
+            <a class="tool-card" href="Data/Monster/index.html">
+              <span class="emoji" aria-hidden="true"
+                ><img
+                  src="https://wiki.bindertowngame.com/img/mob/brute.png"
+                  alt=""
+                  loading="lazy"
+              /></span>
+              <b>Monster Codex (ข้อมูลมอนสเตอร์)</b>
+              <span
+                >มอนสเตอร์ทุกตัวในเกม — เลเวล HP บทบาท แมพที่พบ
+                และลักษณะมอนของแต่ละแมพ</span
+              >
+            </a>
+            <a class="tool-card" href="Data/Map/index.html">
+              <span class="emoji" aria-hidden="true"
+                ><img
+                  src="https://wiki.bindertowngame.com/img/ui/world_atlas.png"
+                  alt=""
+                  loading="lazy"
+              /></span>
+              <b>Map (แผนที่)</b>
+              <span
+                >แมพทุกภูมิภาค พร้อมลักษณะมอนประจำแมพ (Threats)
+                วางแผนอุปกรณ์ก่อนลงดันได้</span
+              >
+            </a>
+            <a class="tool-card" href="Data/Patch/index.html">
+              <span class="emoji" aria-hidden="true"
+                ><img
+                  src="https://wiki.bindertowngame.com/img/item/star_shard.png"
+                  alt=""
+                  loading="lazy"
+              /></span>
+              <b>Patch Note (บันทึกอัปเดต)</b>
+              <span
+                >สรุปการอัปเดตล่าสุดของเกม อาชีพใหม่ · ตระกูลอาวุธ · ภูมิภาคใหม่
+                และระบบการ์ด พร้อมลิงก์ไปหน้าข้อมูลที่เกี่ยวข้อง</span
+              >
+            </a>
+          </div>
+        </section>
+
+        <section class="section" aria-labelledby="world-title">
+          <h2 id="world-title">
+            <img
+              class="h-icon"
+              src="https://wiki.bindertowngame.com/img/ui/world_atlas.png"
+              alt=""
+            />
+            ภาพรวมโลกของเกม
+          </h2>
+          <table class="info-table">
+            <thead>
+              <tr>
+                <th>ภูมิภาค</th>
+                <th>ช่วงเลเวล</th>
+                <th>Resonance การ์ด</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Region A · Valebrook</td>
+                <td>Lv 1–20</td>
+                <td>Hearthland</td>
+              </tr>
+              <tr>
+                <td>Region B · Ashford</td>
+                <td>Lv 18–45</td>
+                <td>Emberheart</td>
+              </tr>
+              <tr>
+                <td>Region C · Stormwall</td>
+                <td>Lv 45–70</td>
+                <td>Frostbound</td>
+              </tr>
+              <tr>
+                <td>Region D · Sanctum</td>
+                <td>Lv 70–99</td>
+                <td>Riftsight</td>
+              </tr>
+              <tr>
+                <td>Region E · Tidehaven</td>
+                <td>Lv 99–113</td>
+                <td>Tidebound</td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="note" style="margin-top: 14px">
+            เลเวลสูงสุดของเกม Lv 115 · อาชีพทั้งหมด 7 สาย (Knight · Warrior ·
+            Scout · Rogue · Mage · Acolyte · Summoner) · World Boss ทุกวัน 12:30
+            และ 19:30 น. ที่ Rootfall Barrow
+          </p>
+        </section>
+
+        <section class="section" aria-labelledby="patch-title">
+          <h2 id="patch-title">
+            <img
+              class="h-icon"
+              src="https://wiki.bindertowngame.com/img/item/star_shard.png"
+              alt=""
+            />
+            แพทซ์ / อัปเดตล่าสุด
+          </h2>
+          <ul class="patch-list">
+            <li>
+              <b>อาชีพใหม่ · Binder (สายเริ่มต้น)</b> — ผู้เล่นใหม่เริ่มที่สาย
+              Binder: สู้ด้วยกำปั้นเหล็ก (Knuckles) + ผูกวิญญาณมอนเป็นอาวุธ
+              ก่อนเลือก 1 ใน 7 สายหลัก
+            </li>
+            <li>
+              <b>อาวุธ/ตระกูลใหม่</b> — เพิ่มตระกูล Rod (หวายเวท) · Knuckles
+              (กำปั้นเหล็ก) · Maul (ค้อนยักษ์) พร้อมสไปรต์จากตัวเกม ·
+              ไอเท็มทั้งเกมรวม 1,771 ชิ้น
+            </li>
+            <li>
+              <b>Region E · Tidehaven (เดิมชื่อ Nacreon)</b> — 6 แมพ Lv 99–113 ·
+              การ์ดใหม่กว่า 50 ใบ (รวม Spell Amp: Hollow Caster · Pearl Wisp)
+            </li>
+            <li>
+              <b>ปรับสมดุลการ์ด</b> — Umbral Horror · Marrow Horror · Pitch
+              Brute · Sky Sentinel ได้เจาะเกราะ (Armor Pierce) เพิ่ม · Resonance
+              สีนับการ์ด ★3 ขึ้นไป
+            </li>
+            <li>
+              <b>ระบบการ์ด (Spirit Album)</b> — 9 ช่องเปิด Lv
+              12/18/25/32/40/50/60/70/85 · Spirit Load สูงสุด 18 · ใบซ้ำ (Echo)
+              ได้ผล 50% / 25%
+            </li>
+            <li
+              class="tree-note"
+              style="border: 0; background: none; padding: 6px 2px 0"
+            >
+              ที่มา:
+              <a href="https://wiki.bindertowngame.com/items"
+                >Binder Town Wiki — Items</a
+              >
+              ·
+              <a href="https://wiki.bindertowngame.com/jobs">Jobs</a>
+              (เทียบตัวเกม ณ 30 ต.ค. 2569) · Patch Note อยู่ในเกมเมนู "Patch
+              Note"
+            </li>
           </ul>
-        </section>
-
-        <section class="section" aria-labelledby="local-title">
-          <h2 id="local-title">รันบนเครื่อง (Local)</h2>
-          <p class="steps">
-            ต้องติดตั้ง <a href="https://nodejs.org/">Node.js</a> ก่อน จากนั้นเปิด
-            Terminal ในโฟลเดอร์ repository แล้วรันคำสั่ง:
-          </p>
-          <pre><code>cd Boss-Timer
-npm install
-npm start</code></pre>
-          <p>
-            จากนั้นเปิด <a href="http://localhost:3000">http://localhost:3000</a>
-            เพื่อใช้งาน
-          </p>
-          <p class="note">
-            หากเปิดผ่าน GitHub Pages ระบบจะแสดงข้อมูลบอสและบันทึกเวลาไว้เฉพาะในเบราว์เซอร์นี้
-            เพราะ GitHub Pages ไม่รองรับเซิร์ฟเวอร์ Node.js
-          </p>
-        </section>
-
-        <section class="section" aria-labelledby="structure-title">
-          <h2 id="structure-title">โครงสร้างไฟล์</h2>
-          <pre class="tree">Binder-Town/
-├── index.html
-├── README.md
-└── Boss-Timer/
-    ├── README.md
-    ├── app.js
-    ├── bosses.json
-    ├── index.html
-    ├── package-lock.json
-    ├── package.json
-    ├── server.js
-    ├── styles.css
-    ├── data/
-    │   └── timers.json
-    ├── image/
-    │   └── Binder Town Map 2k PNG.png
-    └── sound/
-        ├── มี Field Boss กำลังจะเกิดในอีกสามนาที.mp3
-        └── มี Mini Boss กำลังจะเกิดในอีกหนึ่งนาที.mp3</pre>
-          <p class="tree-note">ผังนี้ไม่แสดงโฟลเดอร์ <code>.git</code> และ <code>node_modules</code></p>
         </section>
       </main>
 
-      <footer>
-        <span>Developed by</span>
-        <img
-          class="avatar"
-          src="https://avatars.githubusercontent.com/u/96268091?v=4"
-          alt="CrimsonX avatar"
-        />
-        <strong>CrimsonX</strong>
-      </footer>
+      <footer id="bt-footer"></footer>
     </div>
+    <script src="Tools/nav.js"></script>
   </body>
 </html>

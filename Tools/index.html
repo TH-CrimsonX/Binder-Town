@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Binder Town — หน้าแรก ข้อมูลเกมและเครื่องมือทั้งหมด (Tools) อ้างอิงจากตัวเกมและ Binder Town Wiki"
+    />
+    <title>Binder Town — ข้อมูลเกมและ Tools</title>
+    <link
+      rel="icon"
+      type="image/png"
+      href="https://wiki.bindertowngame.com/img/ui/logo.png"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #07131f;
+        --panel: rgba(17, 29, 40, 0.92);
+        --line: rgba(168, 190, 214, 0.18);
+        --text: #edf4ff;
+        --muted: #9ab0c6;
+        --accent: #59d0ff;
+        --accent-strong: #00b1ff;
+        --gold: #ffc857;
+        --shadow: 0 18px 48px rgba(0, 0, 0, 0.35);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Prompt", sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(
+            ellipse at top,
+            rgba(35, 91, 124, 0.3),
+            transparent 45%
+          ),
+          linear-gradient(180deg, #07131f, #0b1824 65%, #07131f);
+        line-height: 1.7;
+      }
+      a {
+        color: var(--accent);
+        text-underline-offset: 0.2em;
+      }
+      a:hover {
+        color: #a5e8ff;
+      }
+      .page {
+        width: min(1100px, calc(100% - 24px));
+        margin: 0 auto;
+      }
+
+      .hero {
+        padding: 34px 20px 20px;
+        text-align: center;
+      }
+      .hero .logo {
+        width: 88px;
+        height: 88px;
+        margin: 0 auto 14px;
+        object-fit: contain;
+        filter: drop-shadow(0 8px 24px rgba(0, 177, 255, 0.18));
+      }
+      .hero h1 {
+        margin: 0;
+        font-size: clamp(2rem, 5vw, 3rem);
+      }
+      .hero p {
+        color: var(--muted);
+        max-width: 640px;
+        margin: 12px auto 0;
+      }
+
+      .section {
+        margin: 0 0 20px;
+        padding: 26px clamp(18px, 4vw, 32px);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+      }
+      .section h2 {
+        margin: 0 0 16px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--line);
+        font-size: 1.4rem;
+      }
+
+      .tool-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 14px;
+      }
+      .tool-card {
+        display: block;
+        padding: 20px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+        color: var(--text);
+        text-decoration: none;
+        transition:
+          transform 160ms ease,
+          border-color 160ms ease;
+      }
+      .tool-card:hover {
+        transform: translateY(-3px);
+        border-color: rgba(89, 208, 255, 0.5);
+      }
+      .tool-card .emoji {
+        font-size: 2rem;
+      }
+      .tool-card b {
+        display: block;
+        margin: 10px 0 6px;
+        font-size: 1.1rem;
+      }
+      .tool-card span {
+        color: var(--muted);
+        font-size: 0.92rem;
+        line-height: 1.6;
+      }
+
+      .info-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.95rem;
+      }
+      .info-table th,
+      .info-table td {
+        padding: 8px 10px;
+        border-bottom: 1px solid var(--line);
+        text-align: left;
+      }
+      .info-table th {
+        color: var(--muted);
+        font-weight: 500;
+        font-size: 0.85rem;
+      }
+
+      .patch-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 10px;
+      }
+      .patch-list li {
+        padding: 12px 16px;
+        border-left: 3px solid var(--gold);
+        border-radius: 0 10px 10px 0;
+        background: rgba(255, 200, 87, 0.06);
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+      .patch-list b {
+        color: var(--text);
+      }
+
+      .note {
+        padding: 14px 16px;
+        border-left: 3px solid var(--gold);
+        border-radius: 0 8px 8px 0;
+        color: var(--muted);
+        background: rgba(255, 200, 87, 0.06);
+      }
+      @media (max-width: 640px) {
+        .page {
+          width: calc(100% - 20px);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header class="hero">
+        <nav
+          id="bt-nav"
+          aria-label="เมนูหลัก"
+          style="
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            justify-content: center;
+            margin-bottom: 22px;
+          "
+        ></nav>
+        <img
+          class="logo"
+          src="https://wiki.bindertowngame.com/img/ui/logo.png"
+          alt="Binder Town Logo"
+        />
+        <h1>Binder Town</h1>
+        <p>
+          ศูนย์รวมข้อมูลเกมและเครื่องมือ (Tools) — ข้อมูลอ้างอิงจากตัวเกม
+          <a href="https://play.bindertowngame.com/">play.bindertowngame.com</a>
+          และ <a href="https://wiki.bindertowngame.com/">Binder Town Wiki</a>
+        </p>
+      </header>
+
+      <main>
+        <section class="section" aria-labelledby="tools-title">
+          <h2 id="tools-title">🧰 Tools — เครื่องมือ</h2>
+          <div class="tool-grid">
+            <a class="tool-card" href="gear-simulator/">
+              <span class="emoji" aria-hidden="true">🧙</span>
+              <b>ตัวจำลองอุปกรณ์</b>
+              <span
+                >ตัวละคร + กระเป๋าไอเท็มแบบในเกม — ลากเลเวลคำนวณ Tier
+                แล้วเลือกออฟชั่นสวมใส่ได้ทันที</span
+              >
+            </a>
+            <a class="tool-card" href="card-simulator/">
+              <span class="emoji" aria-hidden="true">🃏</span>
+              <b>จำลองสมุดการ์ด</b>
+              <span
+                >ทดลองใส่การ์ด 9 ช่อง ดู Resonance และ Spirit Load
+                พร้อมค้นหาต้นทางการ์ดทุกใบ</span
+              >
+            </a>
+            <a class="tool-card" href="boss-timer/">
+              <span class="emoji" aria-hidden="true">⏰</span>
+              <b>Boss Timer</b>
+              <span
+                >ตัวนับเวลาเกิดบอส Elite / Mini-Boss / Field Boss
+                พร้อมเสียงแจ้งเตือนและบันทึกเวลา</span
+              >
+            </a>
+          </div>
+        </section>
+
+        <section class="section" aria-labelledby="info-title">
+          <h2 id="info-title">📚 ข้อมูลเกม</h2>
+          <div class="tool-grid">
+            <a class="tool-card" href="gear-simulator/armory.html">
+              <span class="emoji" aria-hidden="true">⚔️</span>
+              <b>คลังแสง (Armory)</b>
+              <span
+                >ไอเท็มทุกชิ้นในเกม ครบทุกช่วงเลเวล พร้อมไอคอนจากตัวเกม
+                กรองเลเวลช่วง / มือหลัก-รอง</span
+              >
+            </a>
+            <a class="tool-card" href="gear-simulator/gearbook.html">
+              <span class="emoji" aria-hidden="true">🛡️</span>
+              <b>ชุดภูมิภาค (Region Gearbook)</b>
+              <span
+                >ชุดประจำภูมิภาคทั้ง 12 ชุด พร้อมกติกาใส่ 2 ชิ้น / 4 ชิ้น
+                และจุดดรอปของแต่ละภูมิภาค</span
+              >
+            </a>
+            <a class="tool-card" href="gear-simulator/codex.html">
+              <span class="emoji" aria-hidden="true">📜</span>
+              <b>ตำรากลไก (Mechanics Codex)</b>
+              <span
+                >สีความหายาก จำกัดแถว ตาราง Tier โอกาสสุ่ม และกติกา Reroll
+                ทั้งหมดในหน้าเดียว</span
+              >
+            </a>
+            <a class="tool-card" href="gear-simulator/inscription.html">
+              <span class="emoji" aria-hidden="true">✒️</span>
+              <b>จารึกอุปกรณ์ (Inscription Codex)</b>
+              <span
+                >จารึกครบทั้ง 40 ตัว จัดตามอาชีพและภูมิภาค
+                พร้อมโควตาตามเลเวลตัวละคร</span
+              >
+            </a>
+            <a class="tool-card" href="card-simulator/codex.html">
+              <span class="emoji" aria-hidden="true">🎴</span>
+              <b>ตำราการ์ด (Card Codex)</b>
+              <span
+                >การ์ดทั้งหมด 160 ใบ — ผลการ์ด ต้นทางมอน ภูมิภาค และกติกา
+                Resonance / Spirit Load</span
+              >
+            </a>
+          </div>
+        </section>
+
+        <section class="section" aria-labelledby="world-title">
+          <h2 id="world-title">🌏 ภาพรวมโลกของเกม</h2>
+          <table class="info-table">
+            <thead>
+              <tr>
+                <th>ภูมิภาค</th>
+                <th>ช่วงเลเวล</th>
+                <th>Resonance การ์ด</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Region A · Valebrook</td>
+                <td>Lv 1–20</td>
+                <td>Hearthland</td>
+              </tr>
+              <tr>
+                <td>Region B · Ashford</td>
+                <td>Lv 18–45</td>
+                <td>Emberheart</td>
+              </tr>
+              <tr>
+                <td>Region C · Stormwall City</td>
+                <td>Lv 45–70</td>
+                <td>Frostbound</td>
+              </tr>
+              <tr>
+                <td>Region D · Sanctum</td>
+                <td>Lv 70–99</td>
+                <td>Riftsight</td>
+              </tr>
+              <tr>
+                <td>Region E · Nacreon (ใหม่)</td>
+                <td>Lv 99–113</td>
+                <td>Tidebound</td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="note" style="margin-top: 14px">
+            เลเวลสูงสุดของเกม Lv 115 · อาชีพทั้งหมด 7 สาย (Knight · Warrior ·
+            Scout · Rogue · Mage · Acolyte · Summoner) · World Boss ทุกวัน 12:30
+            และ 19:30 น. ที่ Rootfall Barrow
+          </p>
+        </section>
+
+        <section class="section" aria-labelledby="patch-title">
+          <h2 id="patch-title">📦 แพทซ์ / อัปเดตล่าสุด</h2>
+          <ul class="patch-list">
+            <li>
+              <b>ทวีปใหม่ Nacreon (Region E · Resonance Tidebound)</b> —
+              เพิ่มแมพภาคสนาม 6 แมพ Lv 99–113 พร้อมมอนและการ์ดใหม่กว่า 50 ใบ
+              รวมการ์ด Spell Amp ใหม่ (Hollow Caster · Pearl Wisp)
+            </li>
+            <li>
+              <b>ปรับสมดุลการ์ด</b> — Umbral Horror · Marrow Horror · Pitch
+              Brute · Sky Sentinel ได้ เจาะเกราะ (Armor Pierce) เพิ่ม ·
+              Resonance สีนับการ์ด ★3 ขึ้นไป
+            </li>
+            <li>
+              <b>ระบบการ์ด (Spirit Album)</b> — 9 ช่องเปิดที่ Lv
+              12/18/25/32/40/50/60/70/85 · Spirit Load สูงสุด 18 ที่ Lv 99 ·
+              ใบซ้ำ (Echo) ได้ผล 50% / 25%
+            </li>
+            <li
+              class="tree-note"
+              style="border: 0; background: none; padding: 6px 2px 0"
+            >
+              ที่มา:
+              <a href="https://wiki.bindertowngame.com/cards"
+                >Binder Town Wiki — การ์ด & วิญญาณ</a
+              >
+              (ข้อมูลเทียบตัวเกม ณ 27 ต.ค. 2569) · หน้า Patch Note
+              ในเกมอยู่ที่เมนู "Patch Note"
+            </li>
+          </ul>
+        </section>
+      </main>
+
+      <footer id="bt-footer"></footer>
+    </div>
+    <script src="nav.js"></script>
+  </body>
+</html>

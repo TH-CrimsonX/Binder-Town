@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Glossary — อภิธานศัพท์ Binder Town ศัพท์เกม ค่าที่คนในเกมใช้" />
+    <title>Glossary — Binder Town</title>
+    <link rel="icon" type="image/png" href="https://wiki.bindertowngame.com/img/ui/logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../../Tools/Card-Simulator/styles.css" />
+  </head>
+  <body>
+    <main class="page">
+      <section class="card" id="tier">
+        <h2>ตาราง Tier</h2>
+        <div class="table-wrap">
+          <table class="item-table">
+            <thead><tr><th>Tier</th><th>เลเวลไอเท็มที่ปลด</th></tr></thead>
+            <tbody id="tier-rows"></tbody>
+          </table>
+        </div>
+        <p class="hint">ลุ้นเกิน 1 Tier ได้ 3% ตอนดรอป / 1.5% ตอน Reroll</p>
+      </section>
+
+      <section class="card" id="odds">
+        <div class="set-meta" id="odds"></div>
+        <p class="hint">อ้างอิงจาก Tier สูงสุดที่ปลด — เกมแสดงค่าเหล่านี้ในหน้าต่างไอเท็ม</p>
+      </section>
+
+      <section class="card" id="rules">
+        <ul class="rules">
+          <li><b>สี = จำนวนแถว</b> เขียว 1 แถว · ฟ้า 2 แถว (Magic) · ทอง 3 แถว (Rare) · แดง 4 แถว (Epic). โอกาสตอนดรอป Magic 20% · Rare 4% · Epic 0.08%</li>
+          <li><b>จำกัดแถวต่อชิ้น</b> มี Prefix ได้สูงสุด 2 แถว และ Suffix สูงสุด 3 แถว (Proc นับเป็น Suffix และมีได้ 1 แถว อยู่ช่องไหนก็ได้) · Affix ซ้ำกันในชิ้นเดียวไม่ได้ · แถว Proc Reroll ได้แค่ Proc</li>
+          <li><b>แถวน้อยค่าแรงขึ้น</b> 1 แถว ×1.8 · 2 แถว ×1.35 (Focused)</li>
+          <li><b>สียาก</b> หมวก หน้า ปาก สร้อยคอ เข็มขัด ได้สี Magic / Rare / Epic ยากกว่าชิ้นอื่น 3 เท่า</li>
+          <li><b>Reroll</b> ที่ช่างตีเหล็ก ทีละแถว (Spirit Coin + Gold) · ใส่ Essence ของ Affix ที่อยากได้ = โอกาส 30% · Proc ชนิดเดียวกันหลายชิ้นทำงาน 100% / 50% / 25%</li>
+          <li><b>ช่องไร้ Proc</b> ส่วนที่ไม่มี Proc ให้สุ่ม (เครื่องประดับ หน้า ปาก) สีแดงก็ได้ 4 แถวเป็น Prefix / Suffix ปกติ · Unique (ดรอป World Boss) มีแถวตายตัว ไม่อยู่ในหน้าสุ่ม</li>
+        </ul>
+      </section>
+    </main>
+
+    <div class="toast" id="toast" role="status" hidden></div>
+
+    <script src="../../Tools/nav.js"></script>
+    <script src="../../Tools/bt-data-loader.js"></script>
+    <script src="../../Data/_common.js"></script>
+    <script src="codex.js"></script>
+  </body>
+</html>
+

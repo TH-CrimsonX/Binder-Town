@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Build Simulator — ประกอบบิลด์ทั้งชุด Binder Town" />
+    <title>Build Simulator — Binder Town</title>
+    <link rel="icon" type="image/png" href="https://wiki.bindertowngame.com/img/ui/logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="../nav.js"></script>
+  </head>
+  <body>
+    <main class="page">
+      <section class="card">
+        <h2>ประกอบบิลด์ทั้งชุด</h2>
+        <p class="hint">เลือกอาชีพ → อุปกรณ์+ออฟชั่น (ดึงจาก Gear Simulator) → การ์ด → สรุปทั้งบิลด์ · บันทึกเป็นแถบหุบด้านล่าง</p>
+        <div class="build-grid">
+          <div>
+            <h3>1) อาชีพ & เลเวล</h3>
+            <div class="filters">
+              <select id="b-job"></select>
+              <label class="lvrange">Lv <input id="b-lv" type="number" min="1" max="115" value="92" /></label>
+            </div>
+            <h3>2) อุปกรณ์ + ออฟชั่น (จาก Gear Simulator)</h3>
+            <div id="b-slots" class="b-slot-list"></div>
+            <h3>3) การ์ด (สูงสุด 9 ช่อง)</h3>
+            <div id="b-cards" class="b-card-picks"></div>
+          </div>
+          <div>
+            <h3>สรุปพลังทั้งบิลด์</h3>
+            <div id="b-sum"></div>
+            <div class="build-btns">
+              <input id="b-name" type="text" placeholder="ชื่อบิลด์" maxlength="40" />
+              <button class="btn" id="b-save">💾 บันทึกบิลด์</button>
+              <button class="btn ghost" id="b-clear">🧹 ล้างบิลด์</button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="card">
+        <h2 id="saved-toggle" style="cursor:pointer">📦 บิลด์ที่บันทึกไว้ (<span id="saved-count">0</span>) <small class="hint">— กดเพื่อกาง/หุบ</small></h2>
+        <div id="b-saved" class="saved-list" hidden></div>
+      </section>
+    </main>
+    <div class="toast" id="toast" role="status" hidden></div>
+    <div id="gametip" hidden></div>
+    <script src="../../Data/jobgear.js"></script>
+    <script src="data-loader.js"></script>
+    <script src="../Gear-Simulator/common.js"></script>
+    <script src="build.js"></script>
+  </body>
+</html>

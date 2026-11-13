@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Card Codex — การ์ดทั้งหมดในเกม Binder Town" />
+    <title>Card Codex — Binder Town</title>
+    <link rel="icon" type="image/png" href="https://wiki.bindertowngame.com/img/ui/logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../../Tools/Card-Simulator/styles.css" />
+  </head>
+  <body>
+    <main class="page">
+      <section class="card">
+        <h2>การ์ดทั้งหมดในเกม</h2>
+        <p class="hint">การ์ดของมอนแต่ละตัว ใส่ลงสมุดการ์ด (Spirit Album) เพื่อรับเอฟเฟกต์ · เปิด Lv 12 · 9 ช่อง · ★1–★5 · ข้อมูลจาก Binder Town Wiki</p>
+
+        <div class="filters">
+          <input id="c-search" type="search" placeholder="ค้นหาชื่อการ์ด / ผลการ์ด…" style="flex:1;min-width:180px" />
+          <select id="c-color"></select>
+          <select id="c-load"><option value="">Load: ทั้งหมด</option></select>
+          <select id="c-region"></select>
+        </div>
+        <p class="hint" id="c-count"></p>
+        <div class="card-grid" id="card-list"></div>
+
+        <h3>เทียบค่าการ์ด ★1 กับ ★5</h3>
+        <p class="hint">ค่าการ์ดเพิ่มเป็นเส้นตรงตามดาว: ★1 = 20% · ★2 = 40% · ★3 = 60% · ★4 = 80% · ★5 = 100% ของค่าเต็ม (ค่าที่แสดงในรายการคือค่าเต็ม ★5)</p>
+        <table class="sum-table" id="star-table">
+          <thead><tr><th>ตัวอย่างการ์ด</th><th>★1</th><th>★2</th><th>★3</th><th>★4</th><th>★5</th></tr></thead>
+          <tbody id="star-body"></tbody>
+        </table>
+
+        <h3>Resonance (โบนัสชุดการ์ด)</h3>
+        <div id="res-out"></div>
+
+        <h3>Spirit Codex (สะสมการ์ดถาวร)</h3>
+        <table class="sum-table" id="codex-table">
+          <thead><tr><th>จำนวนมอนที่เคยแลก</th><th>โบนัสถาวร</th></tr></thead>
+          <tbody>
+            <tr><td>5</td><td>STR +1 · AGI +1 · VIT +1 · INT +1 · DEX +1 · LUK +1</td></tr>
+            <tr><td>10</td><td>ATK +2% · MATK +2%</td></tr>
+            <tr><td>20</td><td>Max HP +3%</td></tr>
+            <tr><td>30</td><td>STR +1 · AGI +1 · VIT +1 · INT +1 · DEX +1 · LUK +1</td></tr>
+            <tr><td>40</td><td>Gold จากมอน +5% · เรทดรอป +3%</td></tr>
+            <tr><td>50</td><td>ATK +2% · MATK +2%</td></tr>
+            <tr><td>60</td><td>ลดดาเมจที่ได้รับ 3%</td></tr>
+            <tr><td>75</td><td>โอกาสคริ +2% · STR +2 · AGI +2 · VIT +2 · INT +2 · DEX +2 · LUK +2</td></tr>
+          </tbody>
+        </table>
+
+        <h3>กฎการ์ด (จากเกม)</h3>
+        <ul class="rules">
+          <li>ได้การ์ดจากการสะสมวิญญาณมอนแล้วแลก · การ์ดดรอปตรง ๆ 0.005% ต่อตัว</li>
+          <li>วิญญาณต่อการ์ด ★1 — มอนทั่วไป 3,000–5,400 · Elite 900–1,620 · Mini-boss 180–324 · Field Boss 60–80 (ตามเลเวลมอน)</li>
+          <li>ใบซ้ำ (Echo) — ใบที่ 2 ได้ผล 50% · ใบที่ 3 25% · ใบที่ 4 ไม่มีผล</li>
+          <li>อัปดาว — วิญญาณตัวเดิม (★1→★5 รวม ~×14 ของราคาแลก) · การ์ดใบซ้ำ · หรือ Bond (ใส่ไว้แล้วล่ามอนสายเดียวกัน โตเอง)</li>
+          <li>กลางวัน/กลางคืน — ☾ Nocturnal แรง ×1.4 ตอนกลางคืน · ☀ Diurnal แรง ×1.4 ตอนกลางวัน · อีกช่วง ×0.85</li>
+        </ul>
+      </section>
+    </main>
+
+    <div class="toast" id="toast" role="status" hidden></div>
+
+    <script src="../../Data/cards.js"></script>
+    <script src="../../Tools/nav.js"></script>
+    <script src="codex.js"></script>
+  </body>
+</html>

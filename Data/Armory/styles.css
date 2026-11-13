@@ -1,0 +1,19 @@
+﻿
+/* split layout: ตารางซ้าย · panel ขวา */
+.armory-split{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(280px,1fr);gap:14px;align-items:start;margin-top:14px}
+@media(max-width:900px){.armory-split{grid-template-columns:1fr}}
+.split-left,.split-right{margin-top:0}
+#item-table tbody tr{cursor:pointer}
+#item-table tbody tr:hover{background:rgba(89,208,255,.06)}
+#item-table tbody tr.sel{background:rgba(89,208,255,.1);outline:1px solid rgba(89,208,255,.35)}
+.split-right h4{margin:14px 0 6px;color:var(--accent);font-size:.92rem}
+.d-head{display:flex;gap:10px;align-items:center;margin-bottom:10px}
+.d-head img{width:46px;height:46px;object-fit:contain}
+.d-head b{font-size:1rem}
+.d-stats td:first-child{color:var(--muted)}
+.d-stats td.val{text-align:right;font-weight:700;color:var(--text)}
+.d-affix td:first-child{max-width:220px}
+.d-affix td.val{color:var(--accent)}
+.d-group{margin-top:10px;padding:5px 9px;border-radius:9px;background:rgba(89,208,255,.08);color:#59d0ff;font-size:.84rem}
+.lv-filter{display:flex;align-items:center;gap:5px;color:var(--muted);font-size:.84rem}
+.lv-filter input{width:64px}

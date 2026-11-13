@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Smith Binder Town — ระบบช่างตีเหล็ก" />
+    <title>Smith — Binder Town</title>
+    <link rel="icon" type="image/png" href="https://wiki.bindertowngame.com/img/ui/logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../../Tools/Card-Simulator/styles.css" />
+  </head>
+  <body>
+    <main class="page">
+      <section class="card">
+        <h2>ช่างตีเหล็ก (Smith)</h2>
+        <p class="hint">ตีอุปกรณ์ขั้น 1–10 · อ้างอิงจาก wiki.bindertowngame.com/systems/smith ณ 30 ต.ค. 2569</p>
+
+        <h3>ตารางตีขึ้นรูป</h3>
+        <table class="sum-table"><thead><tr><th>ช่วงเลเวล</th><th>ขั้น</th><th>วัตถุดิบ</th><th>อัตราสำเร็จ</th></tr></thead><tbody id="forge-body"></tbody></table>
+
+        <h3>ค่าตีขึ้นรูปต่อขั้น</h3>
+        <table class="sum-table"><thead><tr><th>ขั้น</th><th>เลเวลที่ปลด</th><th>Gold</th><th>หินตี</th></tr></thead><tbody id="cost-body"></tbody></table>
+
+        <h3>กติกาสำคัญ</h3>
+        <ul class="rules">
+          <li>ตีอุปกรณ์ต้องมี "แม่พิมพ์" ของขั้นนั้น — ได้จากดรอป Boss / เงินแลก</li>
+          <li>อุปกรณ์ที่ตีมีโอกาสได้ "คุณภาพสูง" (แรงกว่าปกติ) โอกาสขึ้นกับขั้น</li>
+          <li>อัปเกรดอุปกรณ์ใช้ "หินตี" — จำกัดจำนวนครั้งต่อชิ้นตามขั้น</li>
+          <li>ตีผิดพลาด วัตถุดิบหายบางส่วน — ใช้ "ค้อนยืดหยุ่น" เพื่อรับประกันความสำเร็จ</li>
+        </ul>
+      </section>
+    </main>
+    <div class="toast" id="toast" role="status" hidden></div>
+    <script src="../../Tools/nav.js"></script>
+    <script src="smith.js"></script>
+  </body>
+</html>

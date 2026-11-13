@@ -1,0 +1,69 @@
+﻿<!DOCTYPE html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Armory — คลังแสง Binder Town ไอเท็มทุกชิ้นครบทุกช่วงเลเวล กรองเลเวลช่วง / มือหลัก-รอง" />
+    <title>Armory — Binder Town Tools</title>
+    <link rel="icon" type="image/png" href="https://wiki.bindertowngame.com/img/ui/logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../../Tools/Card-Simulator/styles.css" />
+    <style>
+      .tier-row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 8px; }
+      .tier-chip {
+        font: inherit; font-size: 0.8rem; padding: 2px 12px;
+        border-radius: 999px; border: 1px solid rgba(154, 176, 198, 0.3);
+        background: rgba(17, 29, 40, 0.7); color: var(--muted); cursor: pointer;
+      }
+      .tier-chip:hover { color: var(--text); border-color: rgba(89, 208, 255, 0.45); }
+      .tier-chip.on {
+        color: #03131c; background: linear-gradient(135deg, #8ee4ff, #00b1ff);
+        border-color: transparent; font-weight: 600;
+      }
+      .filters select { max-width: 190px; }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <section class="card">
+        <h2>ค้นหาไอเท็ม</h2>
+        <div class="filters">
+          <select id="f-slot"></select>
+          <select id="f-wtype" aria-label="ประเภทอาวุธ">
+            <option value="">ประเภท: ทั้งหมด</option>
+          </select>
+          <select id="f-job" aria-label="อาชีพ"></select>
+          <label style="color:var(--muted);font-size:0.88rem">Lv
+            <input id="f-lvmin" type="number" min="1" max="115" value="1" style="width:64px" />
+            –
+            <input id="f-lvmax" type="number" min="1" max="115" value="115" style="width:64px" />
+          </label>
+          <input id="f-search" type="search" placeholder="ค้นหาชื่อไอเท็ม…" style="flex:1;min-width:150px" />
+          <button id="f-reset" class="btn ghost">ล้างตัวกรอง</button>
+        </div>
+        <div class="tier-row" id="f-tier-row" aria-label="กรอง Tier">
+          <span style="color:var(--muted);font-size:0.82rem">Tier:</span>
+        </div>
+        <p class="hint" id="items-count"></p>
+        <div class="table-wrap">
+          <table class="item-table" id="item-table">
+            <thead>
+              <tr><th>ไอเท็ม</th><th>ส่วน</th><th>ประเภท</th><th>Lv</th><th>Tier</th><th>ATK</th><th>MATK</th><th>DEF</th><th></th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <div class="toast" id="toast" role="status" hidden></div>
+
+    <script src="../../Tools/nav.js"></script>
+      <script src="data-loader.js"></script>
+    <script src="../../Data/_common.js"></script>
+    <script src="armory.js"></script>
+  </body>
+</html>
+

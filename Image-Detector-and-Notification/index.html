@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="ตรวจจับไอคอนในหน้าจอเกม Binder Town และแจ้งเตือนด้วยเสียง"
+    />
+    <title>Image Detector and Notification | Binder Town</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <link rel="icon" type="image/png" href="https://wiki.bindertowngame.com/img/ui/logo.png" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand-wrap">
+        <img
+          src="https://wiki.bindertowngame.com/img/ui/logo.png"
+          alt="Binder Town Logo"
+          class="brand-logo"
+        />
+        <div class="brand-copy">
+          <p class="eyebrow">Binder Town</p>
+          <h1>Image Detector and Notification</h1>
+        </div>
+      </div>
+      <div class="top-actions">
+        <div class="live-pill">ประมวลผลบนเครื่องของคุณ</div>
+      </div>
+    </header>
+
+    <main class="page-shell">
+
+      <section class="intro panel">
+        <div>
+          <p class="eyebrow accent-text">SCREEN WATCHER</p>
+          <h2>เล่นเกมต่อได้ ไม่ต้องคอยจ้องหน้าจอ</h2>
+          <p class="intro-copy">
+            วางภาพที่ต้องการค้นหาจากคลิปบอร์ด แล้วให้ระบบส่งเสียงเตือนเมื่อพบภาพ
+            โดยตรวจจับจากหน้าจอที่คุณเลือกแชร์เท่านั้น
+          </p>
+        </div>
+        <a
+          class="game-link"
+          href="https://play.bindertowngame.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          เปิดเกม Binder Town <span aria-hidden="true">↗</span>
+        </a>
+      </section>
+
+      <div class="content-grid">
+        <section class="panel controls-panel" aria-labelledby="controls-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">ตั้งค่าการตรวจจับ</p>
+              <h2 id="controls-title">ไอคอนเป้าหมาย</h2>
+            </div>
+            <span class="step-badge">01</span>
+          </div>
+
+          <div class="target-card">
+            <div class="target-picker">
+              <div class="target-placeholder" aria-hidden="true">
+                <i class="fa-regular fa-image" aria-hidden="true"></i>
+              </div>
+              <div class="target-copy">
+                <strong>ภาพค้นหา</strong>
+                <span id="target-count">เพิ่มภาพได้สูงสุด 10 รูป</span>
+              </div>
+              <label class="upload-button" for="template-input">เพิ่มรูป</label>
+              <input id="template-input" type="file" accept="image/*" multiple />
+            </div>
+            <div id="target-gallery" class="target-gallery" aria-live="polite"></div>
+          </div>
+          <p class="hint">
+            วางภาพด้วย <kbd>Ctrl</kbd> + <kbd>V</kbd> หรือเลือกหลายไฟล์ได้พร้อมกัน
+            รองรับไม่เกิน 10 รูป
+          </p>
+
+          <div class="alarm-settings">
+            <div class="alarm-settings-heading">
+              <p class="eyebrow">เสียงแจ้งเตือน</p>
+              <strong>ตั้งค่าเสียงปลุก</strong>
+            </div>
+            <div class="alarm-file-row">
+              <label class="upload-button" for="alarm-input">เลือกไฟล์เสียง</label>
+              <input id="alarm-input" type="file" accept="audio/*" />
+              <span id="alarm-file-name" class="alarm-file-name">ใช้เสียงเตือนเริ่มต้น</span>
+              <button id="test-sound-button" class="sound-button" type="button">
+                <i class="fa-solid fa-volume-high" aria-hidden="true"></i> ทดสอบเสียง
+              </button>
+            </div>
+            <div class="volume-control">
+              <label for="alarm-volume">
+                <span><i class="fa-solid fa-volume-high" aria-hidden="true"></i> ระดับเสียง</span>
+                <output id="alarm-volume-value" for="alarm-volume">70%</output>
+              </label>
+              <input id="alarm-volume" type="range" min="0" max="100" step="1" value="70" />
+            </div>
+            <label class="alarm-mode-label" for="alarm-mode">รูปแบบการเล่น</label>
+            <select id="alarm-mode" class="alarm-mode-select">
+              <option value="repeat">Repeat — ดังซ้ำๆ ระหว่างที่พบภาพ</option>
+              <option value="once">One Time — ดังครั้งเดียวต่อรอบตรวจจับ</option>
+              <option value="per-found">One Time per Founded — ดังใหม่เมื่อพบภาพอีกครั้ง</option>
+            </select>
+            <p class="hint alarm-hint">
+              One Time จะเตือนเพียงครั้งเดียวจนกว่าจะหยุดแล้วเริ่มใหม่ ไฟล์เสียงไม่ถูกอัปโหลด
+            </p>
+            <audio id="custom-alarm-audio" preload="metadata"></audio>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="section-heading screen-heading">
+            <div>
+              <p class="eyebrow">แชร์หน้าจอ</p>
+              <h2>เริ่มตรวจจับ</h2>
+            </div>
+            <span class="step-badge">02</span>
+          </div>
+          <p class="hint screen-hint">กดเริ่ม แล้วเลือกหน้าต่างเกมหรือทั้งหน้าจอเพื่อเริ่มตรวจจับ</p>
+
+          <div class="button-row">
+            <button id="start-button" class="button start-button" type="button">
+              <i class="fa-solid fa-play" aria-hidden="true"></i> เริ่มการตรวจจับภาพ
+            </button>
+            <button id="stop-button" class="button stop-button" type="button" disabled>
+              <i class="fa-solid fa-stop" aria-hidden="true"></i> หยุดขั้นตอนการตรวจจับ
+            </button>
+          </div>
+          <div class="status-section">
+            <h2 class="status-heading">สถานะการทำงาน</h2>
+            <div id="status-card" class="status-card" role="status" aria-live="polite">
+              <span id="status-indicator" class="status-indicator"></span>
+              <div class="status-copy">
+                <strong id="status-title">ยังไม่ได้เริ่ม</strong>
+                <p id="status-message">เลือกภาพเป้าหมายก่อนเริ่มตรวจจับ</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel preview-panel" aria-labelledby="preview-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">ตัวอย่างภาพที่แชร์</p>
+              <h2 id="preview-title">หน้าจอเกม</h2>
+            </div>
+            <span id="match-badge" class="match-badge">รอแชร์หน้าจอ</span>
+          </div>
+
+          <div id="preview-frame" class="preview-frame">
+            <video id="screen-preview" autoplay muted playsinline></video>
+            <div id="preview-placeholder" class="preview-placeholder">
+              <div class="screen-icon" aria-hidden="true">▣</div>
+              <strong>ยังไม่มีภาพหน้าจอ</strong>
+              <span>ภาพจะปรากฏที่นี่หลังจากอนุญาตแชร์หน้าจอ</span>
+            </div>
+            <div id="detection-box" class="detection-box" hidden>
+              <span id="detection-marker" class="detection-marker">พบไอคอน</span>
+            </div>
+          </div>
+          <p class="preview-note">
+            เลือกแชร์ทั้งหน้าจอเพื่อให้ตรวจจับเกมที่เปิดอยู่อีกฝั่งของ Split view ได้
+          </p>
+
+          <div class="detection-result" aria-live="polite">
+            <div class="crop-preview">
+              <canvas id="crop-preview-canvas" hidden></canvas>
+              <span id="crop-placeholder">ภาพที่ตรวจพบจะแสดงที่นี่</span>
+            </div>
+            <div class="detection-result-copy">
+              <p class="eyebrow">ตำแหน่งที่พบล่าสุด</p>
+              <strong id="detection-location">ยังไม่มีผลตรวจจับ</strong>
+              <span id="detection-coordinates">พิกัดจะแสดงเมื่อพบไอคอน</span>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <section class="notice panel">
+        <span class="notice-icon" aria-hidden="true">i</span>
+        <p>
+          เว็บไซต์เกมไม่อนุญาตให้ฝังในหน้าอื่น จึงต้องเปิดเกมและหน้านี้เป็นคนละแท็บแล้วใช้ Split view
+          ของเบราว์เซอร์ จากนั้นเลือกแชร์ทั้งหน้าจอ เบราว์เซอร์จะขออนุญาตทุกครั้ง
+          ภาพประมวลผลในเครื่องและไม่มีการบันทึกหรือส่งออก
+        </p>
+      </section>
+      <canvas id="capture-canvas" hidden></canvas>
+    </main>
+    <script src="./app.js" defer></script>
+  </body>
+</html>

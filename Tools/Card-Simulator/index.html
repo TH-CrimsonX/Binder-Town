@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Card Book Simulator — จำลองสมุดการ์ด Binder Town ทดลองใส่การ์ด 9 ช่อง ดู Resonance และ Spirit Load"
+    />
+    <title>Card Book Simulator — Binder Town</title>
+    <link
+      rel="icon"
+      type="image/png"
+      href="https://wiki.bindertowngame.com/img/ui/logo.png"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="page">
+      <section class="card">
+        <h2>สมุดการ์ดของฉัน</h2>
+
+        <div class="album-controls">
+          <label
+            >เลเวลตัวละคร
+            <input id="char-lv" type="number" min="1" max="115" value="1" />
+          </label>
+          <label
+            >ช่วงเวลา
+            <select id="daynight">
+              <option value="day">☀ กลางวัน</option>
+              <option value="night">☾ กลางคืน</option>
+            </select>
+          </label>
+          <button class="btn ghost" id="btn-reset">🧹 ล้างทั้งสมุด</button>
+        </div>
+        <p class="hint" id="load-info"></p>
+
+        <div class="slots" id="slots"></div>
+
+        <h3>สรุปการ์ดในสมุด</h3>
+        <div id="sum-out">
+          <p class="empty">ยังไม่ได้ใส่การ์ด — กด "ใส่" จากรายการด้านล่าง</p>
+        </div>
+
+        <h3>ค้นหาการ์ด</h3>
+        <div class="filters">
+          <input
+            id="c-search"
+            type="search"
+            placeholder="ค้นหาชื่อการ์ด / ผลการ์ด…"
+          />
+          <select id="c-color"></select>
+          <select id="c-load">
+            <option value="">ภาระวิญญาณ: ทั้งหมด</option>
+          </select>
+          <select id="c-kind"></select>
+          <select id="c-kin"></select>
+          <label class="lvrange"
+            >เลเวล
+            <input id="c-lvmin" type="number" min="1" max="115" value="1" />
+            –
+            <input id="c-lvmax" type="number" min="1" max="115" value="115" />
+          </label>
+          <select id="c-region"></select>
+        </div>
+        <p class="hint" id="c-count"></p>
+        <div class="bag-content card-grid" id="card-list"></div>
+
+        <h3>กฎการ์ด (จากเกม)</h3>
+        <ul class="rules">
+          <li>
+            ช่องการ์ด 9 ช่อง เปิดที่ Lv 12 · 18 · 25 · 32 · 40 · 50 · 60 · 70 ·
+            85 · ใส่การ์ดไหนช่องไหนก็ได้ ไม่ต้องใส่ในอุปกรณ์
+          </li>
+          <li>
+            Spirit Load — มอนทั่วไป 1 · Elite 2 · Mini-boss 3 · Field Boss 5 ·
+            รับได้ 4 ที่ Lv 12 แล้วเพิ่ม 1 ทุก 6 เลเวล สูงสุด 18
+          </li>
+          <li>
+            ใบซ้ำ (Echo) — การ์ดมอนตัวเดิมใบที่ 2 ได้ผล 50% · ใบที่ 3 25% ·
+            ใบที่ 4 ไม่มีผล
+          </li>
+          <li>
+            ดาว ★1 → ★5 ค่าเพิ่มเป็นเส้นตรง · ใช้วิญญาณมอนตัวเดิมเร่งดาวได้
+          </li>
+          <li>
+            กลางวัน/กลางคืน — การ์ด ☾ Nocturnal แรง ×1.4 ตอนกลางคืน · ☀ Diurnal
+            แรง ×1.4 ตอนกลางวัน · อีกช่วง ×0.85
+          </li>
+          <li>
+            Resonance — ภูมิภาคเดียวกัน 3 / 5 ใบ · มอนสายเดียวกัน 2 ใบ ·
+            สีเดียวกัน ★3 ขึ้นไป 3 ใบ (Legendary 2 ใบ) · นับมอนไม่ซ้ำตัว
+          </li>
+        </ul>
+      </section>
+    </main>
+
+    <div class="toast" id="toast" role="status" hidden></div>
+
+    <script src="../../Data/cards.js"></script>
+    <script src="../nav.js"></script>
+    <script src="cards.js"></script>
+  </body>
+</html>

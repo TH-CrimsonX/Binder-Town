@@ -1,0 +1,93 @@
+/* Build Simulator — ธีมเดียวกับหน้าอื่นของ Binder Town */
+:root {
+  color-scheme: dark;
+  --panel: rgba(17, 29, 40, 0.92);
+  --panel-2: rgba(7, 19, 31, 0.62);
+  --line: rgba(168, 190, 214, 0.18);
+  --text: #edf4ff;
+  --muted: #9ab0c6;
+  --accent: #59d0ff;
+  --accent-strong: #00b1ff;
+  --gold: #ffc857;
+  --shadow: 0 18px 48px rgba(0, 0, 0, 0.35);
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Prompt", sans-serif;
+  color: var(--text);
+  background:
+    linear-gradient(180deg, rgba(6, 16, 25, 0.84), rgba(15, 30, 43, 0.86)),
+    url("../../Data/map-bg.png") center center / cover no-repeat fixed,
+    linear-gradient(180deg, #07131f, #0b1824);
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at top, rgba(35, 91, 124, 0.22), transparent 34%);
+  pointer-events: none;
+  z-index: -1;
+}
+a { color: var(--accent); }
+.page { max-width: 1180px; margin: 0 auto; padding: 0 clamp(16px, 3vw, 28px) 1rem; }
+.card {
+  margin-top: 1.2rem;
+  padding: clamp(14px, 3vw, 26px);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+}
+h2 { margin: 0 0 10px; font-size: 1.25rem; }
+h3 { margin: 18px 0 8px; padding-bottom: 6px; border-bottom: 1px solid var(--line); font-size: 1rem; }
+.hint { color: var(--muted); font-size: 0.84rem; }
+.filters { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+input, select {
+  padding: 0.5rem 0.7rem;
+  border-radius: 10px;
+  border: 1px solid rgba(154, 176, 198, 0.26);
+  background: #0d1b28;
+  color: var(--text);
+  font: inherit;
+}
+select option { background: #0d1b28; color: var(--text); }
+.lvrange { display: flex; align-items: center; gap: 6px; color: var(--muted); font-size: 0.88rem; }
+.lvrange input { width: 76px; }
+.btn { padding: 0.55rem 0.95rem; border: none; border-radius: 10px; background: linear-gradient(135deg, var(--accent-strong), #77d7ff); color: #02141b; font-weight: 700; cursor: pointer; }
+.btn.ghost { background: rgba(255, 255, 255, 0.05); color: var(--text); border: 1px solid var(--line); }
+.btn:hover { transform: translateY(-1px); }
+.build-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 18px; align-items: start; }
+@media (max-width: 860px) { .build-grid { grid-template-columns: 1fr; } }
+.b-slot { padding: 10px 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel-2); margin-bottom: 8px; }
+.b-slot-head { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+.b-slot-head img { width: 30px; height: 30px; object-fit: contain; }
+.b-afx { font-size: 0.86rem; margin: 3px 0; }
+.badge { padding: 1px 7px; border-radius: 8px; background: rgba(255, 200, 87, 0.16); color: var(--gold); font-size: 0.74rem; }
+.b-card-row { display: flex; gap: 8px; margin-bottom: 6px; }
+.b-card-row select { flex: 1; }
+.b-card-row .b-star-sel { flex: 0 0 76px; }
+.build-btns { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+.build-btns input { flex: 1; min-width: 140px; }
+.saved-item { border: 1px solid rgba(154, 176, 198, 0.2); border-radius: 12px; background: rgba(10, 20, 30, 0.7); margin-bottom: 8px; overflow: hidden; }
+.saved-item summary { padding: 0.6rem 0.9rem; cursor: pointer; color: var(--text); font-size: 0.9rem; list-style: none; display: flex; align-items: center; gap: 0.5rem; }
+.saved-item summary::-webkit-details-marker { display: none; }
+.saved-item summary::before { content: "▸"; color: var(--accent); transition: transform 0.15s; }
+.saved-item[open] summary::before { transform: rotate(90deg); }
+.saved-item .saved-body { padding: 0.4rem 0.9rem 0.8rem; display: grid; gap: 0.5rem; }
+.mini-btn { margin-left: auto; padding: 0.15rem 0.6rem; border-radius: 8px; border: 1px solid rgba(255, 123, 114, 0.35); background: rgba(255, 123, 114, 0.08); color: #ff7b72; cursor: pointer; font-size: 0.74rem; }
+#saved-toggle:hover { color: var(--accent); }
+.sum-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+.sum-table th, .sum-table td { padding: 8px 10px; border-bottom: 1px solid var(--line); text-align: left; }
+.sum-table th { color: var(--muted); font-weight: 500; font-size: 0.8rem; }
+.sum-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; margin-top: 12px; }
+.sum-tile { padding: 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel-2); }
+.sum-tile b { color: var(--accent); display: block; margin-bottom: 4px; }
+.sum-tile span { color: var(--muted); font-size: 0.82rem; }
+.tpill { display: inline-block; padding: 0 6px; border-radius: 6px; font-size: 0.72rem; font-weight: 700; color: var(--muted); }
+.toast {
+  position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%);
+  padding: 10px 18px; border: 1px solid rgba(89, 208, 255, 0.4); border-radius: 12px;
+  background: rgba(9, 18, 28, 0.96); color: var(--text); box-shadow: var(--shadow); z-index: 50;
+}
