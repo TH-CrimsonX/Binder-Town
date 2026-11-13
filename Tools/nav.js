@@ -42,12 +42,13 @@
   function segs() {
     return location.pathname.replace(/\\/g, "/").split("/").filter(Boolean);
   }
-  /* path รากเว็บจากหน้าปัจจุบัน — ไม่นับ project prefix บน GitHub Pages */
+  /* Use the project URL as the base on GitHub Pages, including without a trailing slash. */
   function root() {
     const s = segs();
-    const depth =
-      s.filter((x) => !x.includes(".")).length -
-      (s[0] && s[0].toLowerCase() === "binder-town" ? 1 : 0);
+    if (s[0] && s[0].toLowerCase() === "binder-town") {
+      return location.origin + "/Binder-Town/";
+    }
+    const depth = s.filter((x) => !x.includes(".")).length;
     return depth === 0 ? "./" : "../".repeat(depth);
   }
   /* โฟลเดอร์ปลายทางของแต่ละหน้า */
