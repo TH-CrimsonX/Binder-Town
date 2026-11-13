@@ -42,10 +42,13 @@
   function segs() {
     return location.pathname.replace(/\\/g, "/").split("/").filter(Boolean);
   }
-  /* Use the project URL as the base on GitHub Pages, including without a trailing slash. */
+  /* Keep GitHub Pages links under this repository, even when the current path is /. */
   function root() {
     const s = segs();
-    if (s[0] && s[0].toLowerCase() === "binder-town") {
+    if (
+      location.hostname.toLowerCase() === "th-crimsonx.github.io" ||
+      (s[0] && s[0].toLowerCase() === "binder-town")
+    ) {
       return location.origin + "/Binder-Town/";
     }
     const depth = s.filter((x) => !x.includes(".")).length;
